@@ -90,7 +90,7 @@ class LokiIRC(osu_irc.Client):
             await message.reply(self, '[https://www.youtube.com/watch?v=Kz5IlKSbRps/ Horizon Blue NM FC #22 Global]')
 
 
-x = LokiIRC(token="34f2f6cc", nickname="fantastic_loki",reconnect=True, request_limit=15)
+x = LokiIRC(token="XXXXXX", nickname="fantastic_loki",reconnect=True, request_limit=15)
 
 async def main():
     while True == True:
