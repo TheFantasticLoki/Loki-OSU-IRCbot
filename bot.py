@@ -181,7 +181,7 @@ async def user_recent(message, args, prefix):
     mods = int(Mods.convert_str(user_recent_mods))
 
     # requires libbuilt version of oppai
-    with OppaiWrapper('oppai-ng/liboppai.so') as ezpp:
+    with OppaiWrapper('oppai-ng/oppai.exp') as ezpp:
         ezpp.configure(
             mode=0,
             acc=float(user_recent['accuracy']) * 100,
