@@ -2,10 +2,9 @@ import osu_irc
 import _thread
 import asyncio
 from time import sleep
-import requests
 from pprint import pprint
 import datetime
-import aiohttp #this should be green, yea wait
+import aiohttp
 from osu_sr_calculator import calculateStarRating
 
 API_URL = 'https://osu.ppy.sh/api/v2'
@@ -49,8 +48,8 @@ async def loki_help(message, args, prefix):
     """List all available commands to the user"""
     command_list = [] # initiate list of all available commands
     
-    for cmd, callback in commands[prefix].items(): # get command name & the function
-        command_list.append(f'{prefix}{cmd} - {callback.__doc__}') # add cmd to the list and also the explanation of what it does (__doc__ = info given in a function)
+    for cmd, info in commands[prefix].items(): # get command name & the function
+        command_list.append(f'{prefix}{cmd} - {info["cb"].__doc__}') # add cmd to the list and also the explanation of what it does (__doc__ = info given in a function)
 
     messages = [ # initiate messages to return back
         'Welcome to Loki\'s IRC Bot! Developed by The Fantastic Loki',
