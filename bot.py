@@ -114,9 +114,14 @@ async def user_stats(message, args, prefix):
         async with web.get(f"{API_URL}/users/{uid}/scores/best?limit=1", headers=headers) as response:
             user_top = (await response.json())[0]
 
+    playtime_conversion = datetime.timedelta(seconds=int(user['statistics']['play_time'])) # convert map length to hour min seconds format
+    formated_playtime = str(playtime_conversion) # convert map length to string format
+
+    pprint(user, indent=2, depth=3)
+
     msg = [
-        f"Showing stats for [https://osu.ppy.sh/users/{uid}/ {username}] | #{user['statistics']['global_rank']} | {user['follower_count']} Followers",
-        f"PP: {user['statistics']['pp']} | Accuracy: {round(user['statistics']['hit_accuracy'], 2)} | Playcount: {user['statistics']['play_count']:,} | Replays Watched: {user['statistics']['replays_watched_by_others']}",
+        f"Showing stats for [https://osu.ppy.sh/users/{uid}/ {username}] | #{user['statistics']['global_rank']} | {user['follower_count']} Followers | Playtime: {formated_playtime}",
+        f"PP: {user['statistics']['pp']} | Accuracy: {round(user['statistics']['hit_accuracy'], 2)}% | Playcount: {user['statistics']['play_count']:,} | Replays Watched: {user['statistics']['replays_watched_by_others']}",
         f"Grade Counts: HD SS: {user['statistics']['grade_counts']['ssh']} | SS: {user['statistics']['grade_counts']['ss']} | HD S: {user['statistics']['grade_counts']['sh']} | S: {user['statistics']['grade_counts']['s']} | A: {user['statistics']['grade_counts']['a']}",
         f"Ranked Score: {user['statistics']['ranked_score']:,} (Lvl: {user['statistics']['level']['current']})",
         f"Total Score: {user['statistics']['total_score']:,}",
@@ -195,7 +200,7 @@ async def user_recent(message, args, prefix):
     starRating = calculateStarRating(map_id=f"{user_recent['beatmap']['id']}", mods=[f"{user_recent_mods}"])
 
     return [
-        f"Showing Info for Latest Score from [https://osu.ppy.sh/users/{uid}/ {username}]:",
+        f"Showing Info for Latest Score from #{user['statistics']['global_rank']} [https://osu.ppy.sh/users/{uid}/ {username}]:",
         f"Map: [{user_recent['beatmap']['url']} {user_recent['beatmapset']['artist']} - {user_recent['beatmapset']['title']} [{user_recent['beatmap']['version']}]]",
         f"Map Stats (*NM): Stars: {user_recent['beatmap']['difficulty_rating']} | CS: {user_recent['beatmap']['cs']} | AR: {user_recent['beatmap']['ar']} | HP: {user_recent['beatmap']['drain']} | OD: {user_recent['beatmap']['accuracy']} | Length: {formated_length}",
         f"Play Stats: Mods: {user_recent['mods']} | Combo: {user_recent['max_combo']}/{user_recent_map['max_combo']} | Rank: {user_recent['rank']} | Acc: {round(user_recent['accuracy'] * 100, 2)}% | Misses: {user_recent['statistics']['count_miss']} | PP: {user_recent['pp']} | Score: {user_recent['score']:,}"
