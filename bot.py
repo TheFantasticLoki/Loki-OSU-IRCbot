@@ -149,7 +149,7 @@ async def user_stats(message, args, prefix):
     return (msg, tm)
 
 @command(prefix='!', name='last')
-async def user_stats(message, args, prefix):
+async def user_recent(message, args, prefix):
     """Sends a specified user's / your latest score to the user"""
     token = await get_token()
 
@@ -173,7 +173,7 @@ async def user_stats(message, args, prefix):
 
     async with aiohttp.ClientSession() as web:
         async with web.get(f"{API_URL}/beatmaps/{user_recent['beatmap']['id']}", headers=headers) as response:
-            user_recent_map = (await response.json())[0]
+            user_recent_map = await response.json()
 
     length_conversion = datetime.timedelta(seconds=int(user_recent_map['total_length'])) # convert map length to hour min seconds format
     formated_length = str(length_conversion) # convert map length to string format
@@ -198,6 +198,7 @@ async def user_stats(message, args, prefix):
     return [
         f"Showing Info for Latest Score from [https://osu.ppy.sh/users/{uid}/ {username}]:",
         f"Map: [{user_recent['beatmap']['url']} {user_recent['beatmapset']['artist']} - {user_recent['beatmapset']['title']} [{user_recent['beatmap']['version']}]]",
+        f"Map Stats (*NM): Stars: {user_recent['beatmap']['difficulty_rating']} | CS: {user_recent['beatmap']['cs']} | AR: {user_recent['beatmap']['ar']} | HP: {user_recent['beatmap']['drain']} | OD: {user_recent['beatmap']['accuracy']} | Length: {formated_length}",
         f"Play Stats: Mods: {user_recent['mods']} | Combo: {user_recent['max_combo']}/{user_recent_map['max_combo']} | Rank: {user_recent['rank']} | Acc: {round(user_recent['accuracy'] * 100, 2)}% | Misses: {user_recent['statistics']['count_miss']} | PP: {user_recent['pp']} | Score: {user_recent['score']:,}"
     ]
 
