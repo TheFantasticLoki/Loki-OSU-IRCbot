@@ -202,6 +202,17 @@ async def user_recent(message, args, prefix):
     ]
 
 
+@command(prefix='!', name='collections')
+async def loki_collections(message, args, prefix):
+    """Send's Loki's OSU! Collections to the user"""
+    return [
+        "Check out some of my [https://osustats.ppy.sh/collections/1?user=12792332/ Collections]. Import and Use with [https://github.com/Piotrekol/CollectionManager/releases/ Collections Manager by Piotrekol] or just view inside browser.",
+        "[https://osustats.ppy.sh/collection/5924/ Multiplayer Collection] - Loki's Hand Picked Maps for playing Multi. Contains the following types of maps: Fun, Challenge, Banger Songs, Intresting Mapping, etc.",
+        "[https://osustats.ppy.sh/collection/5978/ Stream Consistency Collection] - Collection of Maps for Practicing Streams.",
+        "[https://osustats.ppy.sh/collection/5927/ Bangers Collection] - A collection all about good music meant to get you hyped or groovin."
+    ]
+
+
 class LokiIRC(osu_irc.Client):
     async def onReady(self):
         print("BOT: Connected")
