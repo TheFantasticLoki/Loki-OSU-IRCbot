@@ -5,7 +5,9 @@ from time import sleep
 from pprint import pprint
 import datetime
 import aiohttp
-from osu_sr_calculator import calculateStarRating
+from cmyui.osu.oppai_ng import OppaiWrapper
+from utils import *
+from pathlib import Path
 
 API_URL = 'https://osu.ppy.sh/api/v2'
 TOKEN_URL = 'Https://osu.ppy.sh/oauth/token'
@@ -174,32 +176,44 @@ async def user_recent(message, args, prefix):
         async with web.get(f"{API_URL}/beatmaps/{user_recent['beatmap']['id']}", headers=headers) as response:
             user_recent_map = await response.json()
 
-    length_conversion = datetime.timedelta(seconds=int(user_recent_map['total_length'])) # convert map length to hour min seconds format
-    formated_length = str(length_conversion) # convert map length to string format
+    length = str(datetime.timedelta(seconds=int(user_recent_map['total_length']))) # convert map length to hour min seconds format
     user_recent_mods = "".join(user_recent['mods']) # join mods together
+    mods = int(Mods.convert_str(user_recent_mods))
 
-    # Cap Beatmap Difficulty stats such as cs, od, ar, and hp to 10 unless user_recent['mods'] == ['DT'] in which case cap to 11
-    hrar = round(user_recent['beatmap']['ar'] * 1.4, 2)
-    if hrar > 10:
-        hrar = 10
-    hrcs = round(user_recent['beatmap']['cs'] * 1.3, 2)
-    if hrcs > 10:
-        hrcs = 10
-    hrod = round(user_recent['beatmap']['accuracy'] * 1.4, 2)
-    if hrod > 10:
-        hrod = 10
-    hrhp = round(user_recent['beatmap']['drain'] * 1.4, 2)
-    if hrhp > 10:
-        hrhp = 10
+    # requires libbuilt version of oppai
+    with OppaiWrapper('oppai-ng/liboppai.so') as ezpp:
+        ezpp.configure(
+            mode=0,
+            acc=float(user_recent['accuracy']) * 100,
+            mods=mods,
+            combo=int(user_recent['max_combo']),
+            nmiss=int(user_recent['statistics']['count_miss'])
+        )
+        
+        map_path = Path.cwd() / f'{user_recent["beatmap"]["id"]}.osu' # only store the map temporarily, we'll delete it afterwards
+        map_url = f'https://old.ppy.sh/osu/{user_recent["beatmap"]["id"]}'
+        async with aiohttp.ClientSession() as sesh:
+            async with sesh.get(map_url) as map_resp:
+                m = await map_resp.read()
+                map_path.write_bytes(m)
 
-    starRating = calculateStarRating(map_id=f"{user_recent['beatmap']['id']}", mods=[f"{user_recent_mods}"])
+        ezpp.calculate(map_path)
+        
+        sr = ezpp.get_sr()
+        pp = ezpp.get_pp()
+        cs = ezpp.get_cs()
+        ar = ezpp.get_ar()
+        hp = ezpp.get_hp()
+        od = ezpp.get_od()
+        
+        map_path.unlink() # delete file after we're done lol
 
     return [
-        f"Showing Info for Latest Score from [https://osu.ppy.sh/users/{uid}/ {username}]:",
-        f"Map: [{user_recent['beatmap']['url']} {user_recent['beatmapset']['artist']} - {user_recent['beatmapset']['title']} [{user_recent['beatmap']['version']}]]",
-        f"Map Stats (*NM): Stars: {user_recent['beatmap']['difficulty_rating']} | CS: {user_recent['beatmap']['cs']} | AR: {user_recent['beatmap']['ar']} | HP: {user_recent['beatmap']['drain']} | OD: {user_recent['beatmap']['accuracy']} | Length: {formated_length}",
-        f"Play Stats: Mods: {user_recent['mods']} | Combo: {user_recent['max_combo']}/{user_recent_map['max_combo']} | Rank: {user_recent['rank']} | Acc: {round(user_recent['accuracy'] * 100, 2)}% | Misses: {user_recent['statistics']['count_miss']} | PP: {user_recent['pp']} | Score: {user_recent['score']:,}"
-    ]
+            f"Showing Info for Latest Score from [https://osu.ppy.sh/users/{uid}/ {username}]:",
+            f"Map: [{user_recent['beatmap']['url']} {user_recent['beatmapset']['artist']} - {user_recent['beatmapset']['title']} [{user_recent['beatmap']['version']}]]",
+            f"Map Stats: Stars: {sr} | CS: {cs} | AR: {ar} | HP: {hp} | OD: {od} | Length: {length}",
+            f"Play Stats: Mods: {convert(mods)} | Combo: {user_recent['max_combo']}/{user_recent_map['max_combo']} | Rank: {user_recent['rank']} | Acc: {round(user_recent['accuracy'] * 100, 2)}% | Misses: {user_recent['statistics']['count_miss']} | PP: {pp} | Score: {user_recent['score']:,}"
+        ]
 
 
 class LokiIRC(osu_irc.Client):
