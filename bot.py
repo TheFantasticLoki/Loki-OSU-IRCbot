@@ -8,7 +8,9 @@ import aiohttp
 from osu_sr_calculator import calculateStarRating
 
 API_URL = 'https://osu.ppy.sh/api/v2'
-TOKEN_URL = 'Https://osu.ppy.sh/oauth/token'
+TOKEN_URL = 'Https://osu.ppy.sh/oauth/token' # token url
+TWITCH_API_URL = 'https://api.twitch.tv/helix' 
+TWITCH_AUTH_URL = 'https://id.twitch.tv/oauth2/token' # for twitch auth
 
 API_HEADERS = {
     'Content-Type': 'application/json',
@@ -16,11 +18,25 @@ API_HEADERS = {
     'Authorization': 'Bearer {}' # {} to format token within the code
 }
 
+TWITCH_API_HEADERS = {
+    'Client-ID': 'h0s92gy2sry597kgad71y2oziomb7u',
+    'Authorization': 'Bearer {jd9t3su500duj7kf1umhbyrcae2ax0}' # {} to format token within the code
+}
+
 TOKEN_DATA = {
     'client_id': 8120,
     'client_secret': 'hVPf8DCcoP55pkGnqpzAsvKNjkaKbaTukVte43vE',
     'grant_type': 'client_credentials',
     'scope': 'public'
+}
+
+TWITCH_TOKEN_DATA = {
+    'client_id': 'h0s92gy2sry597kgad71y2oziomb7u',
+    #'client_secret': 'jd9t3su500duj7kf1umhbyrcae2ax0',
+    'redirect_uri': 'http://localhost',
+    'response_type': 'token',
+    #'grant_type': 'client_credentials',
+    'scope': 'user:edit'
 }
 
 commands = {} # command list
@@ -34,6 +50,11 @@ commands['@'] = {}
 async def get_token():
     async with aiohttp.ClientSession() as web:
         async with web.post(TOKEN_URL, data=TOKEN_DATA) as response:
+            return (await response.json()).get('access_token')
+
+async def get_twitch_token():
+    async with aiohttp.ClientSession() as web:
+        async with web.post(TWITCH_AUTH_URL, data=TWITCH_TOKEN_DATA) as response:
             return (await response.json()).get('access_token')
 
 def command(prefix, name, timeout: bool = False): # command decorator
@@ -66,6 +87,16 @@ async def loki_help(message, args, prefix):
 @command(prefix='!', name='twitch')
 async def loki_twitch(message, args, prefix):
     """Send Loki's Twitch channel to the user"""
+    token = await get_twitch_token()
+
+    headers = TWITCH_API_HEADERS
+    headers['Authorization'] = f'Bearer {token}'
+
+    async with aiohttp.ClientSession() as web:
+        async with web.get(f"{TWITCH_API_URL}/channels?broadcaster_name='The Fantastic Loki'", headers=headers) as response:
+            lokitwitch = await response.json()
+    pprint(lokitwitch, indent=2, depth=3)
+
     return [
         'Check out my [https://twitch.tv/TheFantasticLoki/ Twitch Channel] where you can watch me play live.'
     ]
@@ -117,7 +148,7 @@ async def user_stats(message, args, prefix):
     playtime_conversion = datetime.timedelta(seconds=int(user['statistics']['play_time'])) # convert map length to hour min seconds format
     formated_playtime = str(playtime_conversion) # convert map length to string format
 
-    pprint(user, indent=2, depth=3)
+    #pprint(user, indent=2, depth=3)
 
     msg = [
         f"Showing stats for [https://osu.ppy.sh/users/{uid}/ {username}] | #{user['statistics']['global_rank']} | {user['follower_count']} Followers | Playtime: {formated_playtime}",
@@ -158,6 +189,7 @@ async def user_recent(message, args, prefix):
     headers = API_HEADERS
     headers['Authorization'] = f'Bearer {token}'
 
+    # Need to make into try statement to automatically determin if username is valid
     if args:
         username = ' '.join(args)
     else:
