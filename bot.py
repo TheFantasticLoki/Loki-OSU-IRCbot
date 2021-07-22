@@ -132,7 +132,6 @@ async def user_stats(message, args, prefix):
     tm = []
 
     if username == 'Fantastic Loki':
-        await asyncio.sleep(15)
         tm.extend([
             'Achieved Supremacy Medal at #1,000,000',
             'Notable Scores:',
@@ -141,7 +140,6 @@ async def user_stats(message, args, prefix):
             '[https://i.imgur.com/htrui5D.png/ Psalm dla Ciebie - Poloz mnie na swym ramieniu 8.21* 66 Miss Choke]'
         ])
     elif username == 'MudKippz':
-        await asyncio.sleep(5)
         tm.extend([
             'Highest Ranked Pass: 9.64*',
             'Notable Scores:',
