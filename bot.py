@@ -135,8 +135,8 @@ async def user_stats(message, args, prefix):
         tm.extend([
             'Achieved Supremacy Medal at #1,000,000',
             'Notable Scores:',
-            '[https://i.imgur.com/MtgdwHp.png/ Cycle Hit HR 20 Miss 598 Combo Pass]',
-            '[https://i.imgur.com/g8Dwy0Q.png/ Crystalia - Luminosity 7.88* 28 Miss Pass]',
+            '[https://i.imgur.com/MtgdwHp.png/ Cycle Hit HR 20 Miss 598 Combo Pass] - [https://www.dropbox.com/s/taep9jfxqseuhef/Fantastic%20Loki%20-%20KASAI%20HARCORES%20-%20Cycle%20Hit%20%5BHome%20Run%5D%20HR%2020%20Miss%20%282021-06-16%29.osr?dl=1 Replay]',
+            '[https://i.imgur.com/g8Dwy0Q.png/ Crystalia - Luminosity 7.88* 28 Miss Pass] - [https://www.dropbox.com/s/8u9543z43vftozu/Fantastic%20Loki%20-%20DJ%20TOTTO%20-%20Crystalia%20%5BLuminosity%5D%2028%20Miss%20Pass%20%282021-05-13%29.osr?dl=1 Replay]',
             '[https://i.imgur.com/htrui5D.png/ Psalm dla Ciebie - Poloz mnie na swym ramieniu 8.21* 66 Miss Choke]'
         ])
     elif username == 'MudKippz':
@@ -158,6 +158,7 @@ async def user_recent(message, args, prefix):
     headers = API_HEADERS
     headers['Authorization'] = f'Bearer {token}'
 
+    # Add username validity check
     if args:
         username = ' '.join(args)
     else:
@@ -210,7 +211,7 @@ async def loki_collections(message, args, prefix):
     """Send's Loki's OSU! Collections to the user"""
     return [
         "Check out some of my [https://osustats.ppy.sh/collections/1?user=12792332/ Collections]. Import and Use with [https://github.com/Piotrekol/CollectionManager/releases/ Collections Manager by Piotrekol] or just view inside browser.",
-        "[https://osustats.ppy.sh/collection/5924/ Multiplayer Collection] - Loki's Hand Picked Maps for playing Multi. Contains the following types of maps: Fun, Challenge, Banger Songs, Intresting Mapping, etc.",
+        "[https://osustats.ppy.sh/collection/6510/ Multiplayer Collection] - Loki's Hand Picked Maps for playing Multi. Contains the following types of maps: Fun, Challenge, Banger Songs, Intresting Mapping, etc.",
         "[https://osustats.ppy.sh/collection/5978/ Stream Consistency Collection] - Collection of Maps for Practicing Streams.",
         "[https://osustats.ppy.sh/collection/5927/ Bangers Collection] - A collection all about good music meant to get you hyped or groovin."
     ]
