@@ -117,7 +117,7 @@ async def user_stats(message, args, prefix):
     playtime_conversion = datetime.timedelta(seconds=int(user['statistics']['play_time'])) # convert map length to hour min seconds format
     formated_playtime = str(playtime_conversion) # convert map length to string format
 
-    pprint(user, indent=2, depth=3)
+    pprint(user_top, indent=2, depth=3)
 
     msg = [
         f"Showing stats for [https://osu.ppy.sh/users/{uid}/ {username}] | #{user['statistics']['global_rank']} | {user['follower_count']} Followers | Playtime: {formated_playtime}",
@@ -125,7 +125,7 @@ async def user_stats(message, args, prefix):
         f"Grade Counts: HD SS: {user['statistics']['grade_counts']['ssh']} | SS: {user['statistics']['grade_counts']['ss']} | HD S: {user['statistics']['grade_counts']['sh']} | S: {user['statistics']['grade_counts']['s']} | A: {user['statistics']['grade_counts']['a']}",
         f"Ranked Score: {user['statistics']['ranked_score']:,} (Lvl: {user['statistics']['level']['current']})",
         f"Total Score: {user['statistics']['total_score']:,}",
-        f"Highest PP Play: {user_top['pp']}PP on [{user_top['beatmap']['url']} {user_top['beatmapset']['artist']} - {user_top['beatmapset']['title']} ({user_top['beatmap']['version']})]",
+        f"Highest PP Play: {user_top['pp']}PP on [{user_top['beatmap']['url']} {user_top['beatmapset']['artist']} - {user_top['beatmapset']['title']} ({user_top['beatmap']['version']})] with {user_top['mods']}",
         f"Loki!IRC bot Developed by [https://osu.ppy.sh/users/12792332/ The Fantastic Loki]"
     ]
 
@@ -198,11 +198,13 @@ async def user_recent(message, args, prefix):
 
     starRating = calculateStarRating(map_id=f"{user_recent['beatmap']['id']}", mods=[f"{user_recent_mods}"])
 
+    pprint(user_recent, indent=2, depth=3)
+
     return [
         f"Showing Info for Latest Score from #{user['statistics']['global_rank']} [https://osu.ppy.sh/users/{uid}/ {username}]:",
         f"Map: [{user_recent['beatmap']['url']} {user_recent['beatmapset']['artist']} - {user_recent['beatmapset']['title']} [{user_recent['beatmap']['version']}]]",
-        f"Map Stats (*NM): Stars: {user_recent['beatmap']['difficulty_rating']} | CS: {user_recent['beatmap']['cs']} | AR: {user_recent['beatmap']['ar']} | HP: {user_recent['beatmap']['drain']} | OD: {user_recent['beatmap']['accuracy']} | Length: {formated_length}",
-        f"Play Stats: Mods: {user_recent['mods']} | Combo: {user_recent['max_combo']}/{user_recent_map['max_combo']} | Rank: {user_recent['rank']} | Acc: {round(user_recent['accuracy'] * 100, 2)}% | Misses: {user_recent['statistics']['count_miss']} | PP: {user_recent['pp']} | Score: {user_recent['score']:,}"
+        f"Map Stats (*NM): Status: {user_recent['beatmap']['status']} | Stars: {user_recent['beatmap']['difficulty_rating']} | CS: {user_recent['beatmap']['cs']} | AR: {user_recent['beatmap']['ar']} | HP: {user_recent['beatmap']['drain']} | OD: {user_recent['beatmap']['accuracy']} | BPM: {user_recent['beatmap']['bpm']} | Length: {formated_length}",
+        f"Play Stats: Mods: {user_recent['mods']} | Combo: {user_recent['max_combo']}/{user_recent_map['max_combo']} | Rank: {user_recent['rank']} | Acc: {round(user_recent['accuracy'] * 100, 2)}% | Misses: {user_recent['statistics']['count_miss']} | PP: {user_recent['pp']} | Score: {user_recent['score']:,} | FC: {user_recent['perfect']}"
     ]
 
 
@@ -211,9 +213,9 @@ async def loki_collections(message, args, prefix):
     """Send's Loki's OSU! Collections to the user"""
     return [
         "Check out some of my [https://osustats.ppy.sh/collections/1?user=12792332/ Collections]. Import and Use with [https://github.com/Piotrekol/CollectionManager/releases/ Collections Manager by Piotrekol] or just view inside browser.",
-        "[https://osustats.ppy.sh/collection/6510/ Multiplayer Collection] - Loki's Hand Picked Maps for playing Multi. Contains the following types of maps: Fun, Challenge, Banger Songs, Intresting Mapping, etc.",
-        "[https://osustats.ppy.sh/collection/5978/ Stream Consistency Collection] - Collection of Maps for Practicing Streams.",
-        "[https://osustats.ppy.sh/collection/5927/ Bangers Collection] - A collection all about good music meant to get you hyped or groovin."
+        "[https://osustats.ppy.sh/collection/6824 Multiplayer Collection] - Loki's Hand Picked Maps for playing Multi. Contains the following types of maps: Fun, Challenge, Banger Songs, Intresting Mapping, etc.",
+        "[https://osustats.ppy.sh/collection/6825 Stream Consistency Collection] - Collection of Maps for Practicing Streams.",
+        "[https://osustats.ppy.sh/collection/5927 Bangers Collection] - A collection all about good music meant to get you hyped or groovin."
     ]
 
 
