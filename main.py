@@ -67,8 +67,7 @@ class LokiIRC(osu_irc.Client):
             #pprint(loki_top_info['beatmapset'], indent=2, depth=3)
             await message.reply(self, f"Showing stats for [https://osu.ppy.sh/users/12792332/ Fantastic Loki] #{loki['statistics']['global_rank']}")
             await message.reply(self, f"PP: {loki['statistics']['pp']} | Accuracy: {round(loki['statistics']['hit_accuracy'], 2)} | Playcount: {loki['statistics']['play_count']:,}")
-            await message.reply(self, f"Ranked Score: {loki['statistics']['ranked_score']:,} (Lvl: {loki['statistics']['level']['current']})")
-            await message.reply(self, f"Total Score: {loki['statistics']['total_score']:,}")
+            await message.reply(self, f"Ranked Score: {loki['statistics']['ranked_score']:,} (Lvl: {loki['statistics']['level']['current']}) | Total Score: {loki['statistics']['total_score']:,}")
             await message.reply(self, f"Highest PP Play: {loki_top_info['pp']}PP on [{loki_top_info['beatmap']['url']} {loki_top_info['beatmapset']['artist']} - {loki_top_info['beatmapset']['title']} ({loki_top_info['beatmap']['version']})]")
             await asyncio.sleep(5)
             await message.reply(self, 'Achieved Supremacy Medal at #1,000,000')
@@ -78,9 +77,9 @@ class LokiIRC(osu_irc.Client):
             await message.reply(self, '[https://i.imgur.com/htrui5D.png/ Psalm dla Ciebie - Poloz mnie na swym ramieniu 8.21* 66 Miss Choke]')
         elif message.content == "!collections":
             await message.reply(self, "Check out some of my [https://osustats.ppy.sh/collections/1?user=12792332/ Collections]. Import and Use with [https://github.com/Piotrekol/CollectionManager/releases/ Collections Manager by Piotrekol] or just view inside browser.")
-            await message.reply(self, "[https://osustats.ppy.sh/collection/5924/ Multiplayer Collection] - Loki's Hand Picked Maps for playing Multi. Contains the following types of maps: Fun, Challenge, Banger Songs, Intresting Mapping, etc.")
-            await message.reply(self, "[https://osustats.ppy.sh/collection/5978/ Stream Consistency Collection] - Collection of Maps for Practicing Streams.")
-            await message.reply(self, "[https://osustats.ppy.sh/collection/5927/ Bangers Collection] - A collection all about good music meant to get you hyped or groovin.")
+            await message.reply(self, "[https://osustats.ppy.sh/collection/7572/ Multiplayer Collection] - Loki's Hand Picked Maps for playing Multi. Contains the following types of maps: Fun, Challenge, Banger Songs, Intresting Mapping, etc.")
+            await message.reply(self, "[https://osustats.ppy.sh/collection/7573/ Stream Consistency Collection] - Collection of Maps for Practicing Streams.")
+            await message.reply(self, "[https://osustats.ppy.sh/collection/7575/ Bangers Collection] - A collection all about good music meant to get you hyped or groovin.")
         elif message.content == "!last":
             token = await self.get_token()
             headers = {
