@@ -209,7 +209,7 @@ async def loki_guilded(message, args, prefix):
         'Come join The [https://www.guilded.gg/i/k1bm8yzp Lokiverse Guild] where you can get the @osu role and find groups dedicated to multiple games such as OSU!, Minecraft, CSGO, GTA, and More!'
     ]
 
-@command(prefix='!', name='vc')
+@command(prefix='!', name='guildedvc')
 async def loki_guilded_vc(message, args, prefix):
     """Sends an invite to Lokiverse osu! vc to the user"""
     return [
