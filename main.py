@@ -10,6 +10,7 @@ import nng_oppai
 import urllib.request
 import os.path
 from os.path import exists
+import json
 
 API_URL = 'https://osu.ppy.sh/api/v2'
 TOKEN_URL = 'Https://osu.ppy.sh/oauth/token'
@@ -155,7 +156,44 @@ async def user_recent(message, args, prefix):
     length_conversion = datetime.timedelta(seconds=int(user_recent_map['total_length'])) # convert map length to hour min seconds format
     formated_length = str(length_conversion) # convert map length to string format
     user_recent_mods = "".join(user_recent['mods']) # join mods together
+    print(user_recent_mods)
 
+    #mods = user_recent['mods']
+    MODS_NF = (1<<0)
+    MODS_EZ = (1<<1)
+    MODS_TD = (1<<2)
+    MODS_HD = (1<<3)
+    MODS_HR = (1<<4)
+    MODS_SD = (1<<5)
+    MODS_DT = (1<<6)
+    MODS_RX = (1<<7)
+    MODS_HT = (1<<8)
+    MODS_NC = (1<<9)
+    MODS_FL = (1<<10)
+    MODS_AT = (1<<11)
+    MODS_SO = (1<<12)
+    MODS_AP = (1<<13)
+    MODS_PF = (1<<14)
+    MODS_KEY4 = (1<<15)
+    MODS_KEY5 = (1<<16)
+    MODS_KEY6 = (1<<17)
+    MODS_KEY7 = (1<<18)
+    MODS_KEY8 = (1<<19)
+    MODS_FADEIN = (1<<20)
+    MODS_RANDOM = (1<<21)
+    MODS_CINEMA = (1<<22)
+    MODS_TARGET = (1<<23)
+    MODS_KEY9 = (1<<24)
+    MODS_KEYCOOP = (1<<25)
+    MODS_KEY1 = (1<<26)
+    MODS_KEY3 = (1<<27)
+    MODS_KEY2 = (1<<28)
+    MODS_SCOREV2 = (1<<29)
+    #MODS_TOUCH_DEVICE MODS_TD
+    #MODS_NOVIDEO MODS_TD /* never forget */
+    #MODS_SPEED_CHANGING (MODS_DT | MODS_HT | MODS_NC)
+    #MODS_MAP_CHANGING (MODS_HR | MODS_EZ | MODS_SPEED_CHANGING)
+    def mods_func(str):
         mods = 0
         if str.find('DT'):
             mods |= MODS_DT
@@ -188,6 +226,9 @@ async def user_recent(message, args, prefix):
         if str.find('PF'):
             mods |= MODS_PF
         return mods
+        
+    mods = mods_func(user_recent_mods)
+    print(mods_func(user_recent_mods))
     file_exists = os.path.exists(f"E:/Program Files (x86)/OSU!/osu_maps/{user_recent['beatmap']['id']}.osu")
     if file_exists == True:
         map_path = f"E:/Program Files (x86)/OSU!/osu_maps/{user_recent['beatmap']['id']}.osu"
@@ -202,7 +243,7 @@ async def user_recent(message, args, prefix):
     miss_count = user_recent['statistics']['count_miss']
     max_combo = user_recent['max_combo']
     pp = nng_oppai.calc_pp_single(f'{pp_ptr}|{mods}|{acc}|{miss_count}|{max_combo}')
-    map_stats = nng_oppai.get_beatmap_stats(pp_ptr)
+    map_stats = json.loads(nng_oppai.get_beatmap_stats(pp_ptr))
     #map_stats = nng_oppai.get_beatmap_stats(pp_ptr)
 
     print('pp: ', nng_oppai.calc_pp_single(f'{pp_ptr}|{mods}|{acc}|{miss_count}|{max_combo}'))
