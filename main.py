@@ -5,7 +5,6 @@ from time import sleep
 from pprint import pprint
 import datetime
 import aiohttp
-from osu_sr_calculator import calculateStarRating
 import nng_oppai
 import urllib.request
 import os.path
@@ -195,35 +194,35 @@ async def user_recent(message, args, prefix):
     #MODS_MAP_CHANGING (MODS_HR | MODS_EZ | MODS_SPEED_CHANGING)
     def mods_func(str):
         mods = 0
-        if str.find('DT'):
+        if 'DT' in str:
             mods |= MODS_DT
-        if str.find('NC'):
+        if 'NC' in str:
             mods |= MODS_NC
-        if str.find('HT'):
+        if 'HT' in str:
             mods |= MODS_HT
-        if str.find('HR'):
+        if 'HR' in str:
             mods |= MODS_HR
-        if str.find('HD'):
+        if 'HD' in str:
             mods |= MODS_HD
-        if str.find('NF'):
+        if 'NF' in str:
             mods |= MODS_NF
-        if str.find('EZ'):
+        if 'EZ' in str:
             mods |= MODS_EZ
-        if str.find('TD'):
+        if 'TD' in str:
             mods |= MODS_TD
-        if str.find('SD'):
+        if 'SD' in str:
             mods |= MODS_SD
-        if str.find('RX'):
+        if 'RX' in str:
             mods |= MODS_RX
-        if str.find('FL'):
+        if 'FL' in str:
             mods |= MODS_FL
-        if str.find('AT'):
+        if 'AT' in str:
             mods |= MODS_AT
-        if str.find('SO'):
+        if 'SO' in str:
             mods |= MODS_SO
-        if str.find('AP'):
+        if 'AP' in str:
             mods |= MODS_AP
-        if str.find('PF'):
+        if 'PF' in str:
             mods |= MODS_PF
         return mods
         
@@ -281,7 +280,7 @@ async def loki_twitch(message, args, prefix):
 async def loki_skin(message, args, prefix):
     """Send Loki's skin to the user"""
     return [
-        'Check out my [https://drive.google.com/drive/folders/1Kz2ag71kdRZ6Guy5WSxzQHl_2C9p5uHm?usp=sharing/ Custom Skin] focused on minimalism, good for aim and sightreading! Latest Version: V4'
+        'Check out my [https://drive.google.com/drive/folders/1Kz2ag71kdRZ6Guy5WSxzQHl_2C9p5uHm?usp=sharing/ Custom Skin] focused on minimalism, good for aim and sightreading! Latest Version: V5 Now Supporting Lazer'
     ]
 
 @command(prefix='!', name='guilded')
