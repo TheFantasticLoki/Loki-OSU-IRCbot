@@ -228,13 +228,13 @@ async def user_recent(message, args, prefix):
         
     mods = mods_func(user_recent_mods)
     print(mods_func(user_recent_mods))
-    file_exists = os.path.exists(f"E:/Program Files (x86)/OSU!/osu_maps/{user_recent['beatmap']['id']}.osu")
+    file_exists = os.path.exists(f"/osu_maps/{user_recent['beatmap']['id']}.osu")
     if file_exists == True:
-        map_path = f"E:/Program Files (x86)/OSU!/osu_maps/{user_recent['beatmap']['id']}.osu"
+        map_path = f"/osu_maps/{user_recent['beatmap']['id']}.osu"
     else:
         url = f"http://old.ppy.sh/osu/{user_recent['beatmap']['id']}"
-        urllib.request.urlretrieve(url, f"E:/Program Files (x86)/OSU!/osu_maps/{user_recent['beatmap']['id']}.osu")
-        map_path = f"E:/Program Files (x86)/OSU!/osu_maps/{user_recent['beatmap']['id']}.osu"
+        urllib.request.urlretrieve(url, f"/osu_maps/{user_recent['beatmap']['id']}.osu")
+        map_path = f"/osu_maps/{user_recent['beatmap']['id']}.osu"
 
     pp_ptr = nng_oppai.load_map(f'{mods}|{map_path}')
 
