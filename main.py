@@ -5,7 +5,6 @@ from time import sleep
 from pprint import pprint
 import datetime
 import aiohttp
-import nng_oppai
 import urllib.request
 import os.path
 from os.path import exists
