@@ -233,7 +233,7 @@ async def user_recent(message, args, prefix):
         map_path = f"/home/container/osu_maps/{user_recent['beatmap']['id']}.osu"
     else:
         url = f"http://old.ppy.sh/osu/{user_recent['beatmap']['id']}"
-        urllib.request.urlretrieve(url, f"/osu_maps/{user_recent['beatmap']['id']}.osu")
+        urllib.request.urlretrieve(url, f"/home/container/osu_maps/{user_recent['beatmap']['id']}.osu")
         map_path = f"/home/container/osu_maps/{user_recent['beatmap']['id']}.osu"
 
     pp_ptr = nng_oppai.load_map(f'{mods}|{map_path}')
