@@ -155,109 +155,29 @@ async def user_recent(message, args, prefix):
     length_conversion = datetime.timedelta(seconds=int(user_recent_map['total_length'])) # convert map length to hour min seconds format
     formated_length = str(length_conversion) # convert map length to string format
     user_recent_mods = "".join(user_recent['mods']) # join mods together
-    print(user_recent_mods)
+    
+    # Cap Beatmap Difficulty stats such as cs, od, ar, and hp to 10 unless user_recent['mods'] == ['DT'] in which case cap to 11
+    hrar = round(user_recent['beatmap']['ar'] * 1.4, 2)
+    if hrar > 10:
+        hrar = 10
+    hrcs = round(user_recent['beatmap']['cs'] * 1.3, 2)
+    if hrcs > 10:
+        hrcs = 10
+    hrod = round(user_recent['beatmap']['accuracy'] * 1.4, 2)
+    if hrod > 10:
+        hrod = 10
+    hrhp = round(user_recent['beatmap']['drain'] * 1.4, 2)
+    if hrhp > 10:
+        hrhp = 10
 
-    #mods = user_recent['mods']
-    MODS_NF = (1<<0)
-    MODS_EZ = (1<<1)
-    MODS_TD = (1<<2)
-    MODS_HD = (1<<3)
-    MODS_HR = (1<<4)
-    MODS_SD = (1<<5)
-    MODS_DT = (1<<6)
-    MODS_RX = (1<<7)
-    MODS_HT = (1<<8)
-    MODS_NC = (1<<9)
-    MODS_FL = (1<<10)
-    MODS_AT = (1<<11)
-    MODS_SO = (1<<12)
-    MODS_AP = (1<<13)
-    MODS_PF = (1<<14)
-    MODS_KEY4 = (1<<15)
-    MODS_KEY5 = (1<<16)
-    MODS_KEY6 = (1<<17)
-    MODS_KEY7 = (1<<18)
-    MODS_KEY8 = (1<<19)
-    MODS_FADEIN = (1<<20)
-    MODS_RANDOM = (1<<21)
-    MODS_CINEMA = (1<<22)
-    MODS_TARGET = (1<<23)
-    MODS_KEY9 = (1<<24)
-    MODS_KEYCOOP = (1<<25)
-    MODS_KEY1 = (1<<26)
-    MODS_KEY3 = (1<<27)
-    MODS_KEY2 = (1<<28)
-    MODS_SCOREV2 = (1<<29)
-    #MODS_TOUCH_DEVICE MODS_TD
-    #MODS_NOVIDEO MODS_TD /* never forget */
-    #MODS_SPEED_CHANGING (MODS_DT | MODS_HT | MODS_NC)
-    #MODS_MAP_CHANGING (MODS_HR | MODS_EZ | MODS_SPEED_CHANGING)
-    def mods_func(str):
-        mods = 0
-        if 'DT' in str:
-            mods |= MODS_DT
-        if 'NC' in str:
-            mods |= MODS_NC
-        if 'HT' in str:
-            mods |= MODS_HT
-        if 'HR' in str:
-            mods |= MODS_HR
-        if 'HD' in str:
-            mods |= MODS_HD
-        if 'NF' in str:
-            mods |= MODS_NF
-        if 'EZ' in str:
-            mods |= MODS_EZ
-        if 'TD' in str:
-            mods |= MODS_TD
-        if 'SD' in str:
-            mods |= MODS_SD
-        if 'RX' in str:
-            mods |= MODS_RX
-        if 'FL' in str:
-            mods |= MODS_FL
-        if 'AT' in str:
-            mods |= MODS_AT
-        if 'SO' in str:
-            mods |= MODS_SO
-        if 'AP' in str:
-            mods |= MODS_AP
-        if 'PF' in str:
-            mods |= MODS_PF
-        return mods
-        
-    mods = mods_func(user_recent_mods)
-    print(mods_func(user_recent_mods))
-    file_exists = os.path.exists(f"/home/container/osu_maps/{user_recent['beatmap']['id']}.osu")
-    if file_exists == True:
-        map_path = f"/home/container/osu_maps/{user_recent['beatmap']['id']}.osu"
-    else:
-        url = f"http://old.ppy.sh/osu/{user_recent['beatmap']['id']}"
-        urllib.request.urlretrieve(url, f"/home/container/osu_maps/{user_recent['beatmap']['id']}.osu")
-        map_path = f"/home/container/osu_maps/{user_recent['beatmap']['id']}.osu"
-
-    pp_ptr = nng_oppai.load_map(f'{mods}|{map_path}')
-
-    acc = user_recent['accuracy']
-    miss_count = user_recent['statistics']['count_miss']
-    max_combo = user_recent['max_combo']
-    pp = nng_oppai.calc_pp_single(f'{pp_ptr}|{mods}|{acc}|{miss_count}|{max_combo}')
-    map_stats = json.loads(nng_oppai.get_beatmap_stats(pp_ptr))
-    #map_stats = nng_oppai.get_beatmap_stats(pp_ptr)
-
-    print('pp: ', nng_oppai.calc_pp_single(f'{pp_ptr}|{mods}|{acc}|{miss_count}|{max_combo}'))
-
-    print('map_stats', nng_oppai.get_beatmap_stats(pp_ptr))
-    nng_oppai.free_map(pp_ptr) # Free the pp_ptr once you are done
     #pprint(user_recent, indent=2, depth=3)
 
     return [
         f"Showing Info for Latest Score from #{user['statistics']['global_rank']} [https://osu.ppy.sh/users/{uid}/ {username}]:",
         f"Map: [{user_recent['beatmap']['url']} {user_recent['beatmapset']['artist']} - {user_recent['beatmapset']['title']} [{user_recent['beatmap']['version']}]]",
-        f"Map Stats: Status: {user_recent['beatmap']['status']} | Stars: {map_stats['total_stars']} | CS: {map_stats['cs']} | AR: {map_stats['ar']} | HP: {map_stats['drain']} | OD: {map_stats['accuracy']} | BPM: {user_recent['beatmap']['bpm']} | Length: {formated_length}",
-        f"Play Stats: Mods: {user_recent['mods']} | Combo: {user_recent['max_combo']}/{user_recent_map['max_combo']} | Rank: {user_recent['rank']} | Acc: {round(user_recent['accuracy'] * 100, 2)}% | Misses: {user_recent['statistics']['count_miss']} | PP: {round(pp, 2)} | Score: {user_recent['score']:,} | FC: {user_recent['perfect']}"
+        f"Map Stats (*NM): Status: {user_recent['beatmap']['status']} | Stars: {user_recent['beatmap']['difficulty_rating']} | CS: {user_recent['beatmap']['cs']} | AR: {user_recent['beatmap']['ar']} | HP: {user_recent['beatmap']['drain']} | OD: {user_recent['beatmap']['accuracy']} | BPM: {user_recent['beatmap']['bpm']} | Length: {formated_length}",
+        f"Play Stats: Mods: {user_recent_mods} | Combo: {user_recent['max_combo']}/{user_recent_map['max_combo']} | Rank: {user_recent['rank']} | Acc: {round(user_recent['accuracy'] * 100, 2)}% | Misses: {user_recent['statistics']['count_miss']} | PP: {user_recent['pp']} | Score: {user_recent['score']:,} | FC: {user_recent['perfect']}"
     ]
-
 
 @command(prefix='!', name='collections')
 async def loki_collections(message, args, prefix):
