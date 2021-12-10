@@ -264,7 +264,7 @@ async def loki_collections(message, args, prefix):
     """Sends Loki's OSU! Collections to the user"""
     return [
         "Check out some of my [https://osustats.ppy.sh/collections/1?user=12792332/ Collections]. Import and Use with [https://github.com/Piotrekol/CollectionManager/releases/ Collections Manager by Piotrekol] or just view inside browser.",
-        "[https://osustats.ppy.sh/collection/7572 Multiplayer Collection] - Loki's Hand Picked Maps for playing Multi. Contains the following types of maps: Fun, Challenge, Banger Songs, Intresting Mapping, etc.",
+        "[https://osustats.ppy.sh/collection/8525 Multiplayer Collection] - Loki's Hand Picked Maps for playing Multi. Contains the following types of maps: Fun, Challenge, Banger Songs, Intresting Mapping, etc.",
         "[https://osustats.ppy.sh/collection/7573 Stream Consistency Collection] - Collection of Maps for Practicing Streams.",
         "[https://osustats.ppy.sh/collection/7575 Bangers Collection] - A collection all about good music meant to get you hyped or groovin."
     ]
@@ -280,7 +280,7 @@ async def loki_twitch(message, args, prefix):
 async def loki_skin(message, args, prefix):
     """Send Loki's skin to the user"""
     return [
-        'Check out my [https://drive.google.com/drive/folders/1Kz2ag71kdRZ6Guy5WSxzQHl_2C9p5uHm?usp=sharing/ Custom Skin] focused on minimalism, good for aim and sightreading! Latest Version: V5 Now Supporting Lazer'
+        'Check out my [https://drive.google.com/drive/folders/1Kz2ag71kdRZ6Guy5WSxzQHl_2C9p5uHm?usp=sharing/ Custom Skin] focused on minimalism, good for aim and sightreading! Latest Version: V5 Now Supporting Lazer',
         'Be sure to /invite yourself before importing the skin so you can easily join back.'
     ]
 
