@@ -249,7 +249,7 @@ async def user_recent(message, args, prefix):
 
     print('map_stats', nng_oppai.get_beatmap_stats(pp_ptr))
     nng_oppai.free_map(pp_ptr) # Free the pp_ptr once you are done
-    #pprint(user_recent, indent=2, depth=3)
+    pprint(user_recent, indent=2, depth=3)
 
     return [
         f"Showing Info for Latest Score from #{user['statistics']['global_rank']} [https://osu.ppy.sh/users/{uid}/ {username}]:",

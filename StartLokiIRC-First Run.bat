@@ -26,9 +26,10 @@
 ::ZQ0/vhVqMQ3MEVWAtB9wSA==
 ::Zg8zqx1/OA3MEVWAtB9wSA==
 ::dhA7pRFwIByZRRnk
-::Zh4grVQjdCyDJGyX8VAjFBpHWAGbAE+1BaAR7ebv/Nagq1k1QeADVIDQ0/mhE9Vew3fHd5k56klOmdkYIBRTdzuZTUExsWsi
+::Zh4grVQjdCyDJGyX8VAjFBpHWAGbAE+1BaAR7ebv/Nagq1k1QeADVIDQ0/mhE9Vew3fHd5k56klOmdkYIBRTdzuZTUISoHxRoiS3IsnSthfkKg==
 ::YB416Ek+ZG8=
 ::
 ::
 ::978f952a14a936cc963da21a135fa983
+pip install -r requirements.txt
 py main.py

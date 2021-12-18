@@ -1,0 +1,9 @@
+osu_irc
+asyncio
+datetime
+pprint
+time
+aiohttp
+urllib.request
+os.path
+json
