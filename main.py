@@ -10,6 +10,11 @@ import urllib.request
 import os.path
 from os.path import exists
 import json
+import configparser
+
+# Read configuration
+config = configparser.ConfigParser()
+config.read('config.ini')
 
 API_URL = 'https://osu.ppy.sh/api/v2'
 TOKEN_URL = 'Https://osu.ppy.sh/oauth/token'
@@ -21,8 +26,8 @@ API_HEADERS = {
 }
 
 TOKEN_DATA = {
-    'client_id': 8120,
-    'client_secret': 'hVPf8DCcoP55pkGnqpzAsvKNjkaKbaTukVte43vE',
+    'client_id': config['TOKENDATA']['client_id'],
+    'client_secret': config['TOKENDATA']['client_secret'],
     'grant_type': 'client_credentials',
     'scope': 'public'
 }
@@ -366,7 +371,7 @@ class LokiIRC(osu_irc.Client):
             for msg in timeout_messages:
                 await message.reply(self, msg)
 
-x = LokiIRC(token="34f2f6cc", nickname="fantastic_loki", reconnect=True, request_limit=15)
+x = LokiIRC(token=config['IRCTOKEN']['token'], nickname=config['IRCTOKEN']['nick'], reconnect=True, request_limit=15)
 
 async def main():
     while True:
