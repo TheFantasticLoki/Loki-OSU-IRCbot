@@ -105,23 +105,23 @@ async def user_stats(message, args, prefix):
         f"PP: {user['statistics']['pp']} | Accuracy: {round(user['statistics']['hit_accuracy'], 2)}% | Playcount: {user['statistics']['play_count']:,} | Replays Watched: {user['statistics']['replays_watched_by_others']}",
         f"Grade Counts: HD SS: {user['statistics']['grade_counts']['ssh']} | SS: {user['statistics']['grade_counts']['ss']} | HD S: {user['statistics']['grade_counts']['sh']} | S: {user['statistics']['grade_counts']['s']} | A: {user['statistics']['grade_counts']['a']}",
         f"Ranked Score: {user['statistics']['ranked_score']:,} (Lvl: {user['statistics']['level']['current']}) | Total Score: {user['statistics']['total_score']:,}",
-        f"Highest PP Play: {user_top['pp']}PP on [{user_top['beatmap']['url']} {user_top['beatmapset']['artist']} - {user_top['beatmapset']['title']} ({user_top['beatmap']['version']})] with {round(user_top['accuracy'] * 100, 2)}% {user_top['mods']}",
+        f"Highest PP Play: {user_top['pp']}PP on [{user_top['beatmap']['url']} {user_top['beatmapset']['artist']} - {user_top['beatmapset']['title']} ({user_top['beatmap']['version']})] ({user_top['beatmap']['difficulty_rating']}* NM) with {round(user_top['accuracy'] * 100, 2)}% {user_top['mods']}",
     ]
 
     tm = []
 
     if username == 'Fantastic Loki':
         tm.extend([
-            'Achieved Supremacy Medal at #1,000,000',
-            'Notable Scores:',
-            '[https://i.imgur.com/is2g8SM.png/ XI - Freedom Dive (tpz Overcute Remix) POG DIMENSIONS 8.02* 235BPM Tech 53 Miss Pass Choke] - [https://osu.ppy.sh/ss/17011607/cb48 SS] - [https://drive.google.com/file/d/1G9CO0yNB615fFA8VTu4XTwZvd10CSUb9/view?usp=sharing Replay File] - [https://osu.ppy.sh/beatmapsets/895846#osu/1871842 Map Link]',
-            '[https://i.imgur.com/g8Dwy0Q.png/ Crystalia - Luminosity 7.88* 28 Miss Pass] - [https://www.dropbox.com/s/8u9543z43vftozu/Fantastic%20Loki%20-%20DJ%20TOTTO%20-%20Crystalia%20%5BLuminosity%5D%2028%20Miss%20Pass%20%282021-05-13%29.osr?dl=1 Replay] - [https://osu.ppy.sh/beatmapsets/691220#osu/1519160 Map Link]',
-            '[https://i.imgur.com/MtgdwHp.png/ Cycle Hit HR 20 Miss 598 Combo Pass] - [https://www.dropbox.com/s/taep9jfxqseuhef/Fantastic%20Loki%20-%20KASAI%20HARCORES%20-%20Cycle%20Hit%20%5BHome%20Run%5D%20HR%2020%20Miss%20%282021-06-16%29.osr?dl=1 Replay] - [https://osu.ppy.sh/beatmapsets/636839#osu/1351114 Map Link]'
+            'Notable Scores & Achievements:',
+            'Achieved Supremacy Medal ([https://osu.ppy.sh/ss/17461452/075f 7* Ranked Pass]) at #1,080,000 | Highest Star Pass: [https://osu.ppy.sh/ss/17461437/a071 9.46*] | Highest Loved Pass: [https://osu.ppy.sh/ss/17461440/b737 8.51*] | Highest Ranked Pass: [https://osu.ppy.sh/ss/17461447/24a1 7.89*]',
+            '[https://i.imgur.com/is2g8SM.png/ XI - Freedom Dive (tpz Overcute Remix) POG DIMENSIONS 8.02* 235BPM Tech 53 Miss Sightread Pass Choke(163K)] - [https://osu.ppy.sh/ss/17011607/cb48 SS] - [https://drive.google.com/file/d/1G9CO0yNB615fFA8VTu4XTwZvd10CSUb9/view?usp=sharing Replay File] - [https://osu.ppy.sh/beatmapsets/895846#osu/1871842 Map Link]',
+            '[https://i.imgur.com/g8Dwy0Q.png/ Crystalia - Luminosity 7.88* 28 Miss Pass(893K)] - [https://www.dropbox.com/s/8u9543z43vftozu/Fantastic%20Loki%20-%20DJ%20TOTTO%20-%20Crystalia%20%5BLuminosity%5D%2028%20Miss%20Pass%20%282021-05-13%29.osr?dl=1 Replay] - [https://osu.ppy.sh/beatmapsets/691220#osu/1519160 Map Link]',
+            '[https://i.imgur.com/MtgdwHp.png/ Cycle Hit HR 20 Miss 598 Combo Pass (236K)] - [https://www.dropbox.com/s/taep9jfxqseuhef/Fantastic%20Loki%20-%20KASAI%20HARCORES%20-%20Cycle%20Hit%20%5BHome%20Run%5D%20HR%2020%20Miss%20%282021-06-16%29.osr?dl=1 Replay] - [https://osu.ppy.sh/beatmapsets/636839#osu/1351114 Map Link]'
         ])
-    elif username == 'MudKippz':
+    elif username == 'Kippz':
         tm.extend([
+            'Notable Scores & Achievements:',
             'Highest Ranked Pass: 9.64*',
-            'Notable Scores:',
             '[https://www.youtube.com/watch?v=I7R3uzbUNL4&ab_channel=MudKippz/ Astrid HDHR FC #6 Global]',
             '[https://www.youtube.com/watch?v=w9pWF6iS_8U/ Cory in the House 4th DT Fc Global]',
             '[https://www.youtube.com/watch?v=Kz5IlKSbRps/ Horizon Blue NM FC #22 Global]'
@@ -250,11 +250,11 @@ async def user_recent(message, args, prefix):
     map_stats = json.loads(nng_oppai.get_beatmap_stats(pp_ptr))
     #map_stats = nng_oppai.get_beatmap_stats(pp_ptr)
 
-    print('pp: ', nng_oppai.calc_pp_single(f'{pp_ptr}|{mods}|{acc}|{miss_count}|{max_combo}'))
+    #print('pp: ', nng_oppai.calc_pp_single(f'{pp_ptr}|{mods}|{acc}|{miss_count}|{max_combo}'))
 
-    print('map_stats', nng_oppai.get_beatmap_stats(pp_ptr))
+    #print('map_stats', nng_oppai.get_beatmap_stats(pp_ptr))
     nng_oppai.free_map(pp_ptr) # Free the pp_ptr once you are done
-    pprint(user_recent, indent=2, depth=3)
+    #pprint(user_recent, indent=2, depth=3)
 
     return [
         f"Showing Info for Latest Score from #{user['statistics']['global_rank']} [https://osu.ppy.sh/users/{uid}/ {username}]:",
@@ -269,9 +269,9 @@ async def loki_collections(message, args, prefix):
     """Sends Loki's OSU! Collections to the user"""
     return [
         "Check out some of my [https://osustats.ppy.sh/collections/1?user=12792332/ Collections]. Import and Use with [https://github.com/Piotrekol/CollectionManager/releases/ Collections Manager by Piotrekol] or just view inside browser.",
-        "[https://osustats.ppy.sh/collection/8525 Multiplayer Collection] - Loki's Hand Picked Maps for playing Multi. Contains the following types of maps: Fun, Challenge, Banger Songs, Intresting Mapping, etc.",
-        "[https://osustats.ppy.sh/collection/7573 Stream Consistency Collection] - Collection of Maps for Practicing Streams.",
-        "[https://osustats.ppy.sh/collection/7575 Bangers Collection] - A collection all about good music meant to get you hyped or groovin."
+        "[https://osustats.ppy.sh/collection/9585 Multiplayer Bangers Collection] (Main Collection) - Loki's Hand Picked Maps for playing Multi. Contains the following types of maps: Fun, Challenge, Banger Songs, Intresting Mapping, etc.",
+        "[https://osustats.ppy.sh/collection/9586 Stream Consistency Collection] - Collection of Maps for Practicing Streams.",
+        "[https://osustats.ppy.sh/collection/9588 Bangers Collection] - A collection all about good music meant to get you hyped or groovin."
     ]
 
 @command(prefix='!', name='twitch')
