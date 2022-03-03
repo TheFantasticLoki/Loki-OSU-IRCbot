@@ -285,8 +285,8 @@ async def loki_twitch(message, args, prefix):
 async def loki_skin(message, args, prefix):
     """Send Loki's skin to the user"""
     return [
-        'Check out my [https://drive.google.com/drive/folders/1Kz2ag71kdRZ6Guy5WSxzQHl_2C9p5uHm?usp=sharing/ Custom Skin] focused on minimalism, good for aim and sightreading! Latest Version: V5 Now Supporting Lazer',
-        'Be sure to /invite yourself before importing the skin so you can easily join back.'
+        'Check out my [https://drive.google.com/drive/folders/1Kz2ag71kdRZ6Guy5WSxzQHl_2C9p5uHm?usp=sharing/ Custom Skin] focused on minimalism, good for aim and sightreading! Latest Version: V6 Now Supporting Lazer, All Official Modes AND Support for Yoso Ruleset!',
+        'If using command in multiplayer be sure to /invite yourself before importing the skin so you can easily join back.'
     ]
 
 @command(prefix='!', name='guilded')
