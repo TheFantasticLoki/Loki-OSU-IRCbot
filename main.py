@@ -273,11 +273,16 @@ async def loki_collections(message, args, prefix):
         "[https://osustats.ppy.sh/collection/9588 Bangers Collection] - A collection all about good music meant to get you hyped or groovin."
     ]
 
-@command(prefix='!', name='twitch')
+@command(prefix='!', name='socials')
 async def loki_twitch(message, args, prefix):
-    """Send Loki's Twitch channel to the user"""
+    """Send Loki's Social Links to the user"""
     return [
-        'Check out my [https://twitch.tv/TheFantasticLoki/ Twitch Channel] where you can watch me play live.'
+        'Check out my [https://twitch.tv/TheFantasticLoki/ Twitch Channel] where you can watch me play live.',
+        'Come join my [https://bit.ly/LokiHubDiscord discord] where you can find channels for Games such as OSU!, CSGO, Minecraft, and other topics.',
+        'Come join this [https://bit.ly/LokiOSUVCInv Voice Chat]! It will join directly to the OSU! VC in my server.',
+        'Come join The [https://www.guilded.gg/i/k1bm8yzp Lokiverse Guild] where you can get the @osu role and find groups dedicated to multiple games such as OSU!, Minecraft, CSGO, GTA, and More!',
+        'Come join [https://www.guilded.gg/i/k5alYKWk?cid=46c9ee4e-5320-406b-99bd-e48e14e41802&intent=voice OSU VC] in the Lokiverse Guild! Multiple VC rooms, Sub-Room VC with direct vc between members in different rooms and More!',
+        'Come join [https://www.guilded.gg/i/2GaJ0BBp?cid=a7988af4-dd71-4e6a-9d8b-0335dd22fdb6&intent=stream Lokiverse Guilded OSU Live] where you can stream your game and chat with others!'
     ]
 
 @command(prefix='!', name='skin')
@@ -288,42 +293,7 @@ async def loki_skin(message, args, prefix):
         'If using command in multiplayer be sure to /invite yourself before importing the skin so you can easily join back.'
     ]
 
-@command(prefix='!', name='guilded')
-async def loki_guilded(message, args, prefix):
-    """Sends Lokiverse Guild server to the user"""
-    return [
-        'Come join The [https://www.guilded.gg/i/k1bm8yzp Lokiverse Guild] where you can get the @osu role and find groups dedicated to multiple games such as OSU!, Minecraft, CSGO, GTA, and More!'
-    ]
-
-@command(prefix='!', name='guildedvc')
-async def loki_guilded_vc(message, args, prefix):
-    """Sends an invite to Lokiverse osu! vc to the user"""
-    return [
-        'Come join [https://www.guilded.gg/i/k5alYKWk?cid=46c9ee4e-5320-406b-99bd-e48e14e41802&intent=voice OSU VC] in the Lokiverse Guild! Multiple VC rooms, Sub-Room VC with direct vc between members in different rooms and More!'
-    ]
-
-@command(prefix='!', name='osulive')
-async def loki_osulive(message, args, prefix):
-    """Sends an invite to OSU Live in Lokiverse to the user"""
-    return [
-        'Come join [https://www.guilded.gg/i/2GaJ0BBp?cid=a7988af4-dd71-4e6a-9d8b-0335dd22fdb6&intent=stream Lokiverse OSU Live] where you can stream your game and chat with others!'
-    ]
-
-@command(prefix='!', name='discord')
-async def loki_discord(message, args, prefix):
-    """Send Loki's Discord server to the user"""
-    return [
-        'Come join my [https://bit.ly/LokiHubDiscord discord] where you can find channels for Games such as OSU!, CSGO, Minecraft, and other topics.'
-    ]
-
-@command(prefix='!', name='vc')
-async def loki_vc(message, args, prefix):
-    """Sends an invite to Loki's osu! vc to the user"""
-    return [
-        'Come Join this [https://bit.ly/LokiOSUVCInv Voice Chat]! It will join directly to the OSU! VC in my server.'
-    ]
-
-@command(prefix='!', name='test')
+@command(prefix='!', name='testcmd')
 async def loki_test(message, args, prefix):
     """Send test command"""
     print(nng_oppai.test(1))
