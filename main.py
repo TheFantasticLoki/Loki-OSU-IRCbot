@@ -52,25 +52,6 @@ def command(prefix, name, timeout: bool = False): # command decorator
 
     return wrapper
 
-@command(prefix='!', name='lokihelp')
-async def loki_help(message, args, prefix):
-    """List all available commands to the user"""
-    command_list = [] # initiate list of all available commands
-    
-    for cmd, info in commands[prefix].items(): # get command name & the function
-        command_list.append(f'{prefix}{cmd} - {info["cb"].__doc__}') # add cmd to the list and also the explanation of what it does (__doc__ = info given in a function)
-
-    messages = [ # initiate messages to return back
-        'Welcome to Loki\'s IRC Bot! Developed by The Fantastic Loki, Current List of Commands | ! = Loki!IRC Prefix:'
-    ]
-    
-    messages.extend(command_list) # add the entire command list to list to return
-    messages.append(
-        'Thanks to [https://osu.ppy.sh/users/13431764/ minisbett] for helping me with the initial code'
-    )
-    
-    return messages
-
 @command(prefix='!', name='stats', timeout=True)
 async def user_stats(message, args, prefix):
     """Sends a specified user's / your stats to the user"""
@@ -292,6 +273,25 @@ async def loki_skin(message, args, prefix):
         'Check out my [https://drive.google.com/drive/folders/1Kz2ag71kdRZ6Guy5WSxzQHl_2C9p5uHm?usp=sharing/ Custom Skin] focused on minimalism, good for aim and sightreading! Latest Version: V6 Now Supporting Lazer, All Official Modes AND Support for Yoso Ruleset!',
         'If using command in multiplayer be sure to /invite yourself before importing the skin so you can easily join back.'
     ]
+
+@command(prefix='!', name='lokihelp')
+async def loki_help(message, args, prefix):
+    """List all available commands to the user"""
+    command_list = [] # initiate list of all available commands
+    
+    for cmd, info in commands[prefix].items(): # get command name & the function
+        command_list.append(f'{prefix}{cmd} - {info["cb"].__doc__}') # add cmd to the list and also the explanation of what it does (__doc__ = info given in a function)
+
+    messages = [ # initiate messages to return back
+        'Welcome to Loki\'s IRC Bot! Developed by The Fantastic Loki, Current List of Commands | ! = Loki!IRC Prefix:'
+    ]
+    
+    messages.extend(command_list) # add the entire command list to list to return
+    messages.append(
+        'Thanks to [https://osu.ppy.sh/users/13431764/ minisbett] for helping me with the initial code'
+    )
+    
+    return messages
 
 @command(prefix='!', name='testcmd')
 async def loki_test(message, args, prefix):
