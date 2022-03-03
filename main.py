@@ -61,13 +61,12 @@ async def loki_help(message, args, prefix):
         command_list.append(f'{prefix}{cmd} - {info["cb"].__doc__}') # add cmd to the list and also the explanation of what it does (__doc__ = info given in a function)
 
     messages = [ # initiate messages to return back
-        'Welcome to Loki\'s IRC Bot! Developed by The Fantastic Loki',
-        'Current List of Commands | ! = Loki | % = Cryceptio | $ = Mylk | @ = Kippz:'
+        'Welcome to Loki\'s IRC Bot! Developed by The Fantastic Loki, Current List of Commands | ! = Loki!IRC Prefix:'
     ]
     
     messages.extend(command_list) # add the entire command list to list to return
     messages.append(
-        'Thanks to [https://osu.ppy.sh/users/13431764/ minisbett] for helping me with the initialcode'
+        'Thanks to [https://osu.ppy.sh/users/13431764/ minisbett] for helping me with the initial code'
     )
     
     return messages
