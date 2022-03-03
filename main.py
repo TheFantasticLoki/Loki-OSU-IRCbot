@@ -293,13 +293,13 @@ async def loki_help(message, args, prefix):
     
     return messages
 
-@command(prefix='!', name='testcmd')
-async def loki_test(message, args, prefix):
-    """Send test command"""
-    print(nng_oppai.test(1))
-    return [
-        'test complete'
-    ]
+#@command(prefix='!', name='testcmd')
+#async def loki_test(message, args, prefix):
+#    """Send test command"""
+#    print(nng_oppai.test(1))
+#    return [
+#        'test complete'
+#    ] 
 
 
 
