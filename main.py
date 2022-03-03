@@ -259,11 +259,11 @@ async def loki_twitch(message, args, prefix):
     """Send Loki's Social Links to the user"""
     return [
         'Check out my [https://twitch.tv/TheFantasticLoki/ Twitch Channel] where you can watch me play live.',
-        'Come join my [https://bit.ly/LokiHubDiscord discord] where you can find channels for Games such as OSU!, CSGO, Minecraft, and other topics.',
-        'Come join this [https://bit.ly/LokiOSUVCInv Voice Chat]! It will join directly to the OSU! VC in my server.',
-        'Come join The [https://www.guilded.gg/i/k1bm8yzp Lokiverse Guild] where you can get the @osu role and find groups dedicated to multiple games such as OSU!, Minecraft, CSGO, GTA, and More!',
-        'Come join [https://www.guilded.gg/i/k5alYKWk?cid=46c9ee4e-5320-406b-99bd-e48e14e41802&intent=voice OSU VC] in the Lokiverse Guild! Multiple VC rooms, Sub-Room VC with direct vc between members in different rooms and More!',
-        'Come join [https://www.guilded.gg/i/2GaJ0BBp?cid=a7988af4-dd71-4e6a-9d8b-0335dd22fdb6&intent=stream Lokiverse Guilded OSU Live] where you can stream your game and chat with others!'
+        'Come join my [https://bit.ly/LokiHubDiscord Discord Server] where you can find channels for Games such as OSU!, CSGO, Minecraft, and other topics.',
+        'Come join the [https://bit.ly/LokiOSUVCInv Voice Chat]! It will join directly to the OSU! VC in my Discord server.',
+        'Come join the [https://www.guilded.gg/i/k1bm8yzp Lokiverse Guild] where you can get the @osu role and find groups dedicated to multiple games such as OSU!, Minecraft, CSGO, GTA, and More!',
+        'Come join the [https://www.guilded.gg/i/k5alYKWk?cid=46c9ee4e-5320-406b-99bd-e48e14e41802&intent=voice OSU VC] in the Lokiverse Guild! Multiple VC rooms, Sub-Room VC with direct vc between members in different rooms and More!',
+        'Come join the [https://www.guilded.gg/i/2GaJ0BBp?cid=a7988af4-dd71-4e6a-9d8b-0335dd22fdb6&intent=stream Lokiverse Guilded OSU Live] where you can stream your game and chat with others!'
     ]
 
 @command(prefix='!', name='skin')
