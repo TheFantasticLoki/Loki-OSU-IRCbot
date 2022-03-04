@@ -93,10 +93,8 @@ async def user_stats(message, args, prefix):
     if username == 'Fantastic Loki':
         tm.extend([
             'Notable Scores & Achievements:',
-            'Achieved Supremacy Medal ([https://osu.ppy.sh/ss/17461452/075f 7* Ranked Pass]) at #1,080,000 | Highest Star Pass: [https://osu.ppy.sh/ss/17461437/a071 9.46*] | Highest Loved Pass: [https://osu.ppy.sh/ss/17461440/b737 8.51*] | Highest Ranked Pass: [https://osu.ppy.sh/ss/17461447/24a1 7.89*]',
-            '[https://i.imgur.com/is2g8SM.png/ XI - Freedom Dive (tpz Overcute Remix) POG DIMENSIONS 8.02* 235BPM Tech 53 Miss Sightread Pass Choke(163K)] - [https://osu.ppy.sh/ss/17011607/cb48 SS] - [https://drive.google.com/file/d/1G9CO0yNB615fFA8VTu4XTwZvd10CSUb9/view?usp=sharing Replay File] - [https://osu.ppy.sh/beatmapsets/895846#osu/1871842 Map Link]',
-            '[https://i.imgur.com/g8Dwy0Q.png/ Crystalia - Luminosity 7.88* 28 Miss Pass(893K)] - [https://www.dropbox.com/s/8u9543z43vftozu/Fantastic%20Loki%20-%20DJ%20TOTTO%20-%20Crystalia%20%5BLuminosity%5D%2028%20Miss%20Pass%20%282021-05-13%29.osr?dl=1 Replay] - [https://osu.ppy.sh/beatmapsets/691220#osu/1519160 Map Link]',
-            '[https://i.imgur.com/MtgdwHp.png/ Cycle Hit HR 20 Miss 598 Combo Pass (236K)] - [https://www.dropbox.com/s/taep9jfxqseuhef/Fantastic%20Loki%20-%20KASAI%20HARCORES%20-%20Cycle%20Hit%20%5BHome%20Run%5D%20HR%2020%20Miss%20%282021-06-16%29.osr?dl=1 Replay] - [https://osu.ppy.sh/beatmapsets/636839#osu/1351114 Map Link]'
+            'Achieved Supremacy Medal ([https://link.issou.best/63gO9 7* Ranked Pass]) at #1,080,000 | Highest Star Pass: [https://link.issou.best/Zqs3D 9.46*] | Highest Loved Pass: [https://link.issou.best/xUJfL 8.51*] | Highest Ranked Pass: [https://link.issou.best/14ChJ 8.18*]',
+            '[https://link.issou.best/lU4yb XI - Freedom Dive (tpz Overcute Remix) POG DIMENSIONS 8.02* 235BPM Tech 53 Miss Sightread Pass Choke(163K)] || [https://link.issou.best/mFCd2 Crystalia - Luminosity 7.88* 28 Miss Pass(893K)] || [https://link.issou.best/VlVAn Cycle Hit HR 20 Miss 598 Combo Pass (236K)]'
         ])
     elif username == 'Kippz':
         tm.extend([
