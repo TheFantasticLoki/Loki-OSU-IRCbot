@@ -246,7 +246,7 @@ async def user_recent(message, args, prefix):
 async def loki_collections(message, args, prefix):
     """Sends Loki's OSU! Collections to the user"""
     return [
-        "Check out some of my [https://osustats.ppy.sh/collections/1?user=12792332/ Collections]. Import and Use with [https://github.com/Piotrekol/CollectionManager/releases/ Collections Manager by Piotrekol] or just view inside browser.",
+        "Check out some of my [https://osustats.ppy.sh/collections/1?user=12792332 Collections]. Import and Use with [https://github.com/Piotrekol/CollectionManager/releases/ Collections Manager by Piotrekol] or just view inside browser.",
         "[https://osustats.ppy.sh/collection/9585 Multiplayer Bangers Collection] (Main Collection) - Loki's Hand Picked Maps for playing Multi. Contains the following types of maps: Fun, Challenge, Banger Songs, Intresting Mapping, etc.",
         "[https://osustats.ppy.sh/collection/9586 Stream Consistency Collection] - Collection of Maps for Practicing Streams.",
         "[https://osustats.ppy.sh/collection/9588 Bangers Collection] - A collection all about good music meant to get you hyped or groovin."
