@@ -247,9 +247,9 @@ async def loki_collections(message, args, prefix):
     """Sends Loki's OSU! Collections to the user"""
     return [
         "Check out some of my [https://osustats.ppy.sh/collections/1?user=12792332 Collections]. Import and Use with [https://github.com/Piotrekol/CollectionManager/releases/ Collections Manager by Piotrekol] or just view inside browser.",
-        "[https://osustats.ppy.sh/collection/9585 Multiplayer Bangers Collection] (Main Collection) - Loki's Hand Picked Maps for playing Multi. Contains the following types of maps: Fun, Challenge, Banger Songs, Intresting Mapping, etc.",
-        "[https://osustats.ppy.sh/collection/9586 Stream Consistency Collection] - Collection of Maps for Practicing Streams.",
-        "[https://osustats.ppy.sh/collection/9588 Bangers Collection] - A collection all about good music meant to get you hyped or groovin."
+        "[https://osustats.ppy.sh/collection/9963 Multiplayer Bangers Collection] (Main Collection) - Loki's Hand Picked Maps for playing Multi. Contains the following types of maps: Fun, Challenge, Banger Songs, Intresting Mapping, etc.",
+        "[https://osustats.ppy.sh/collection/9964 Stream Consistency Collection] - Collection of Maps for Practicing Streams.",
+        "[https://osustats.ppy.sh/collection/9966 Bangers Collection] - A collection all about good music meant to get you hyped or groovin."
     ]
 
 @command(prefix='!', name='socials')
@@ -269,6 +269,7 @@ async def loki_skin(message, args, prefix):
     """Send Loki's skin to the user"""
     return [
         'Check out my [https://drive.google.com/drive/folders/1Kz2ag71kdRZ6Guy5WSxzQHl_2C9p5uHm?usp=sharing/ Custom Skin] focused on minimalism, good for aim and sightreading! Latest Version: V6 Now Supporting Lazer, All Official Modes AND Support for Yoso Ruleset!',
+        'IMPORTANT: If you have downloaded any of my skins in the past or know someone who has please have them redownload it!!! All versions updated to fix a bug with followpoints in lazer!!!',
         'If using command in multiplayer be sure to /invite yourself before importing the skin so you can easily join back.'
     ]
 
