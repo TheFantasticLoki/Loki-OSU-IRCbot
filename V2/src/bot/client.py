@@ -3,8 +3,9 @@ import asyncio
 from typing import Optional
 from ..services.database import DatabaseService
 from ..services.osu_api import OsuApiService
+from ..services.calculator import PPCalculator
 from ..bot.command import Command, CommandContext
-from src.commands import *
+from src.commands import core_commands
 
 class LokiBot(osu_irc.Client):
     """
@@ -24,6 +25,7 @@ class LokiBot(osu_irc.Client):
         nickname: str,
         database: DatabaseService,
         osu_api: OsuApiService,
+        calculator: PPCalculator,
         Loop: Optional[asyncio.AbstractEventLoop] = None
     ):
         """
@@ -39,6 +41,12 @@ class LokiBot(osu_irc.Client):
         super().__init__(token=token, nickname=nickname, Loop=Loop)
         self.database = database
         self.osu_api = osu_api
+        self.calculator = calculator
+        
+    async def onReady(self):
+        """Called when IRC connection is established"""
+        await self.calculator.initialize()
+        print("BOT: Connected and services initialized")
         
     async def start(self) -> None:
         """
@@ -98,7 +106,8 @@ class LokiBot(osu_irc.Client):
             author=message.Author,
             content=message.content,
             osu_api=self.osu_api,
-            database=self.database
+            database=self.database,
+            calculator=self.calculator
         )
 
         try:

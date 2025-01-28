@@ -32,3 +32,64 @@ async def stats_command(ctx, *args):
     
     return messages, []  # Return main messages and empty timeout messages list
 
+@Command.register("last")
+@Command.register("r")
+@Command.register("recent")
+async def last_command(ctx, *args):
+    """Sends a specified user's / your latest score"""
+    try:
+        # Handle username parsing
+        username = ' '.join(args) if args else ctx.author.name.replace('_', ' ')
+
+        # Get user data
+        user = await ctx.osu_api.get_user(username)
+        uid = user['id']
+
+        # Get user's recent score
+        try:
+            user_recent = await ctx.osu_api.get_user_recent(uid, limit=1)
+        except ValueError:
+            return [f"No recent plays found for {username}"], []
+        
+        # Get PP calculation if not ranked
+        if user_recent['beatmap']['status'] != 'ranked' or user_recent['pp'] == None:
+            print(f"Calculating PP | Mods: {user_recent['mods']}")
+            pp_calc = await ctx.calculator.calculate_score(
+                beatmap_id=user_recent['beatmap']['id'],
+                mods=user_recent['mods'],
+                accuracy=user_recent['accuracy'],
+                count_miss=user_recent['statistics']['count_miss'],
+                count_50=user_recent['statistics']['count_50'],
+                count_100=user_recent['statistics']['count_100'],
+                count_300=user_recent['statistics']['count_300'],
+                count_katu=user_recent['statistics']['count_katu'],
+                count_geki=user_recent['statistics']['count_geki'],
+                max_combo=user_recent['max_combo']
+            )
+            #print(pp_calc)
+            pp_value = pp_calc['performance']['totalPerformance']
+        else:
+            pp_value = user_recent['pp']
+
+        # Use calculated or API PP value
+        pp_display = f"{round(pp_value, 2) if pp_value is not None else 'None'}"
+
+        # Format length for display
+        length_conversion = timedelta(seconds=int(user_recent['beatmap']['total_length']))
+        formatted_length = str(length_conversion)
+
+        # Format response with all V1 information
+        return [ # TODO: Fix Map Max Combo not being correct. (THANKS PEPPY!!!!!!!!!)
+            f"Showing Info for Latest Score from #{user['statistics']['global_rank']} [https://osu.ppy.sh/users/{uid}/ {username}]:",
+            
+            f"Map: [{user_recent['beatmap']['url']} {user_recent['beatmapset']['artist']} - {user_recent['beatmapset']['title']} [{user_recent['beatmap']['version']}]]",
+            
+            f"Map Stats: Status: {user_recent['beatmap']['status']} | Stars: {user_recent['beatmap']['difficulty_rating']} | CS: {user_recent['beatmap']['cs']} | AR: {user_recent['beatmap']['ar']} | HP: {user_recent['beatmap']['drain']} | OD: {user_recent['beatmap']['accuracy']} | BPM: {user_recent['beatmap']['bpm']} | Length: {formatted_length}",
+            
+            f"Play Stats: Mods: {user_recent['mods']} | Combo: {user_recent['max_combo']}/{user_recent['beatmap']['count_circles'] + user_recent['beatmap']['count_sliders'] + user_recent['beatmap']['count_spinners']} | Rank: {user_recent['rank']} | Acc: {round(user_recent['accuracy'] * 100, 2)}% | Misses: {user_recent['statistics']['count_miss']} | PP: {pp_display} | Score: {user_recent['score']:,} | FC: {user_recent['perfect']}"
+        ], []
+    except Exception as e:
+        print(f"Error fetching recent play: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return [f"Error fetching recent play: {str(e)}"], []

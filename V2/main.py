@@ -6,6 +6,7 @@ from src.bot.client import LokiBot
 from src.utils.config import load_config
 from src.services.osu_api import OsuApiService
 from src.services.database import DatabaseService
+from src.services.calculator import PPCalculator
 
 """
 Main module for the Loki OSU Bot application.
@@ -97,6 +98,7 @@ async def main():
             client_id=config.osu.client_id,
             client_secret=config.osu.client_secret
         )
+        calculator = PPCalculator()
         
         # Create event loop explicitly
         loop = asyncio.new_event_loop()
@@ -108,6 +110,7 @@ async def main():
             nickname=config.irc.nickname,
             database=database,
             osu_api=osu_api,
+            calculator=calculator,
             Loop=loop
         )
         

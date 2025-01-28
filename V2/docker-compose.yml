@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  loki-osu-irc:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: loki-osu-irc-bot:v2-latest
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./config.yaml:/app/config.yaml
+      - ./main.py:/app/main.py
+      - ./src:/app/src
+    ports:
+      - "3000:3000"
+    restart: unless-stopped

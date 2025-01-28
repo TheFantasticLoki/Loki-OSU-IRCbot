@@ -114,3 +114,32 @@ class OsuApiService:
         ) as response:
             scores = await response.json()
             return scores[0] if limit == 1 else scores
+    async def get_user_recent(self, user_id: int, limit: int = 1) -> Dict[str, Any]:
+        """
+        Fetch a user's recent scores from the osu! API.
+        
+        Args:
+            user_id (int): The user's osu! ID
+            limit (int): Number of scores to retrieve (default: 1)
+                
+        Returns:
+            Dict[str, Any]: The user's recent scores as returned by the API
+            
+        Raises:
+            ValueError: If user has no recent plays
+        """
+        if self.session is None:
+            self.session = aiohttp.ClientSession()
+                
+        headers = {'Authorization': f'Bearer {self.token}'}
+        async with self.session.get(
+            f'https://osu.ppy.sh/api/v2/users/{user_id}/scores/recent',
+            params={'include_fails': 1, 'limit': limit},
+            headers=headers
+        ) as response:
+            scores = await response.json()
+            
+            if not scores:  # Check if scores list is empty
+                raise ValueError(f"No recent plays found for user ID {user_id}")
+                
+            return scores[0] if limit == 1 else scores

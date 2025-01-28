@@ -1,5 +1,6 @@
 from typing import Callable, Dict, Any, Optional
 from dataclasses import dataclass
+from src.services import calculator
 
 @dataclass
 class CommandContext:
@@ -16,6 +17,7 @@ class CommandContext:
     content: str
     osu_api: Any  
     database: Any
+    calculator: Any
 
 class Command:
     """

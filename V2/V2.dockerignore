@@ -1,0 +1,8 @@
+__pycache__/
+.idea/
+.vscode/
+.vs/
+osu_maps/
+L-IRC-V2/
+data/bot.db
+node_modules/
