@@ -92,3 +92,25 @@ class OsuApiService:
             headers=headers
         ) as response:
             return await response.json()
+    async def get_user_best(self, user_id: int, limit: int = 1) -> Dict[str, Any]:
+        """
+        Fetch a user's best scores from the osu! API.
+        
+        Args:
+            user_id (int): The user's osu! ID
+            limit (int): Number of scores to retrieve (default: 1)
+            
+        Returns:
+            Dict[str, Any]: The user's top scores as returned by the API
+        """
+        if self.session is None:
+            self.session = aiohttp.ClientSession()
+            
+        headers = {'Authorization': f'Bearer {self.token}'}
+        async with self.session.get(
+            f'https://osu.ppy.sh/api/v2/users/{user_id}/scores/best',
+            params={'limit': limit},
+            headers=headers
+        ) as response:
+            scores = await response.json()
+            return scores[0] if limit == 1 else scores

@@ -1,3 +1,4 @@
+import _thread
 import asyncio
 import logging
 from pathlib import Path
@@ -44,6 +45,27 @@ async def cleanup_resources(bot, database):
         logger.error(f"Error during database cleanup: {e}")
     
     logger.info("Cleanup complete")
+    
+async def handle_console_input(bot):
+    """Handle console input for lobby management"""
+    while True:
+        text = input()
+        
+        if not 'JOIN' in text:
+            # Handle match ID input
+            await bot.joinChannel(f"mp_{text}")
+            print(f"BOT: Joined #mp_{text}")
+            await bot.sendMessage(f"mp_{text}", "Hey there! I am Loki's IRC Bot. !lokihelp for commands. Have fun playing!")
+        else:
+            # Handle explicit JOIN command
+            channel = text.split(' ')[1]
+            if '#' in channel:
+                continue  # Skip public channels
+            
+            await bot.joinChannel(channel)
+            print(f'BOT: Joined {channel}')
+            await bot.sendMessage(channel, "Hey there! I am Loki's IRC Bot. !lokihelp for commands. Have fun playing!")
+
 
 async def main():
     """
@@ -76,16 +98,33 @@ async def main():
             client_secret=config.osu.client_secret
         )
         
+        # Create event loop explicitly
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        
         # Initialize bot
         bot = LokiBot(
             token=config.irc.token,
             nickname=config.irc.nickname,
             database=database,
-            osu_api=osu_api
+            osu_api=osu_api,
+            Loop=loop
         )
         
         logger.info("Starting Loki OSU Bot...")
-        await bot.start()
+        # Start bot in separate thread
+        _thread.start_new_thread(bot.run, ())
+        
+        # Wait for bot to be ready
+        while not bot.running:
+            await asyncio.sleep(1)
+            
+        logger.info("Bot running.")
+        # Give connection time to establish
+        await asyncio.sleep(3)
+        
+        # Now handle console input in main thread
+        await handle_console_input(bot)
         
     except KeyboardInterrupt:
         logger.info("Received Ctrl+C, initiating shutdown...")
