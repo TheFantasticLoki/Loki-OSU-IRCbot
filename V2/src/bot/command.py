@@ -21,6 +21,7 @@ class CommandContext:
     database: Any
     calculator: Any
     channel_manager: Any
+    match_manager: Any
     message_queue: Any
 
 @dataclass

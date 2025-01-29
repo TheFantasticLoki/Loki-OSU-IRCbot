@@ -57,3 +57,21 @@ async def mpStart_command(ctx, *args):
         
     except ValueError:
         return ["Invalid countdown value! Usage: !start [seconds]"], []
+
+@Command.register("matchinfo", category="multi", subcategory="debug")
+async def handle_match_info(ctx):
+    """Get debug information about current match"""
+    match_id = ctx.channel.replace('mp_', '')
+    log(f"mID: {match_id}", "debug")
+    
+    debug_info = await ctx.match_manager.get_match_debug_info(match_id)
+    info_lines = debug_info.split('\n')
+    
+    # Group lines into sets of 3
+    grouped_lines = []
+    for i in range(0, len(info_lines), 4):
+        group = info_lines[i:i+4]
+        grouped_lines.append(' | '.join(group))
+    
+    return grouped_lines, []
+

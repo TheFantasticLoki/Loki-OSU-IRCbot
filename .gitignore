@@ -5,6 +5,7 @@ __pycache__/
 .vs/
 config.ini
 osu_maps/
+ai-context/
 V1/L-IRC-V1/
 V1/__pycache__/
 V1/.idea/

@@ -130,6 +130,7 @@ class LokiBot(osu_irc.Client):
             database=self.database,
             calculator=self.calculator,
             channel_manager=self.channel_manager,
+            match_manager=self.match_manager,
             message_queue=self.message_queue
         )
         
