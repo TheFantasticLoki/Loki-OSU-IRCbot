@@ -2,7 +2,7 @@ from src.bot.command import Command
 from ..utils import log, getTB
 from datetime import timedelta
 
-@Command.register("stats")
+@Command.register(["stats"], category="basic")
 async def stats_command(ctx, *args):
     """Sends a specified user's / your stats to the user"""
     # Handle username parsing
@@ -33,9 +33,7 @@ async def stats_command(ctx, *args):
     
     return messages, []  # Return main messages and empty timeout messages list
 
-@Command.register("last")
-@Command.register("r")
-@Command.register("recent")
+@Command.register(["last", "r", "recent"], category="basic")
 async def last_command(ctx, *args):
     """Sends a specified user's / your latest score"""
     try:

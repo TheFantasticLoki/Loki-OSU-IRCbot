@@ -50,6 +50,6 @@ class CustomCommandHandler:
 
 # Register all custom commands
 for cmd in CustomCommandHandler.VALID_COMMANDS:
-    @Command.register(cmd)
+    @Command.register([cmd], category="basic", subcategory="custom")
     async def custom_command(ctx, *args, cmd=cmd):
         return await CustomCommandHandler.handle_custom_command(ctx, cmd, *args)

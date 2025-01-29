@@ -3,9 +3,9 @@ from ...utils import log, getTB
 import asyncio
 from typing import List
 
-@Command.register("join")
+@Command.register(["join"], category="multi")
 async def join_command(ctx, *args):
-    """Joins a multiplayer lobby"""
+    """Joins a multi lobby, use matchid from end of match history link"""
     try:
         # Check if a match ID was provided
         if not args:
@@ -31,8 +31,9 @@ async def join_command(ctx, *args):
         log(f"Error joining lobby: {str(e)}\nTraceback:\n{getTB()}", "error")
         return [f"Error joining lobby: {str(e)}"], []
 
-@Command.register("start")
+@Command.register(["start"], category="multi")
 async def mpStart_command(ctx, *args):
+    """Starts the match after a specified delay or 3 seconds"""
     try:
         countdown = int(args[0]) if args else 3
         

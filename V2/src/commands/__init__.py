@@ -1,4 +1,5 @@
 # Import Regular Commands
+from .help import *
 from .core_commands import *
 from .custom_commands import *
 from .config_commands import *

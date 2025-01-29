@@ -2,7 +2,7 @@ from src.bot.command import Command
 from .custom_commands import CustomCommandHandler
 from ..utils import log
 
-@Command.register("addmsg")
+@Command.register("addmsg", category="config", subcategory="custom")
 async def add_message(ctx, *args):
     """Add/Update a message for a custom command"""
     if len(args) < 3:
@@ -29,7 +29,7 @@ async def add_message(ctx, *args):
     except ValueError:
         return ["Index must be a number!"], []
 
-@Command.register("delmsg")
+@Command.register("delmsg", category="config", subcategory="custom")
 async def delete_message(ctx, *args):
     """Delete a message from a custom command"""
     if len(args) < 2:

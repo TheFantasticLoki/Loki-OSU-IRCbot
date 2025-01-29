@@ -34,4 +34,4 @@ class ChannelManager:
         channels = await self.get_active_channels()
         for channel in channels:
             await self.irc_client.joinChannel(channel)
-            await self.irc_client.sendMessage(channel, "Rejoined after reconnection!")
+            await self.irc_client.sendMessage(channel, "Rejoined after reconnect/restart!")
