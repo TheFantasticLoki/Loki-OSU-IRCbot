@@ -1,7 +1,6 @@
 from src.bot.command import Command
-from ..utils import log
+from ..utils import log, getTB
 from datetime import timedelta
-import sys
 
 @Command.register("stats")
 async def stats_command(ctx, *args):
@@ -91,5 +90,5 @@ async def last_command(ctx, *args):
             f"Play Stats: Mods: {user_recent['mods']} | Combo: {user_recent['max_combo']}/{user_recent['beatmap']['count_circles'] + user_recent['beatmap']['count_sliders'] + user_recent['beatmap']['count_spinners']} | Rank: {user_recent['rank']} | Acc: {round(user_recent['accuracy'] * 100, 2)}% | Misses: {user_recent['statistics']['count_miss']} | PP: {pp_display} | Score: {user_recent['score']:,} | FC: {user_recent['perfect']}"
         ], []
     except Exception as e:
-        log(f"Error fetching recent play: {str(e)}\nTraceback:\n{sys.exc_info()}", "error")
+        log(f"Error fetching recent play: {str(e)}\nTraceback:\n{getTB()}", "error")
         return [f"Error fetching recent play: {str(e)}"], []

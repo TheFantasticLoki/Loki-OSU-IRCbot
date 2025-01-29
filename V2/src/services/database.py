@@ -30,7 +30,7 @@ class DatabaseService:
         self.config = connection_config
         self.db_type = connection_config.get('type', 'sqlite')
         self.pool = None
-        
+    
     async def connect(self) -> None:
         """
         Establish a connection to the database based on the configured database type.
@@ -58,7 +58,10 @@ class DatabaseService:
             db_path = Path(self.config.get('path', 'data/bot.db'))
             db_path.parent.mkdir(parents=True, exist_ok=True)
             self.pool = await aiosqlite.connect(db_path)
-            
+        
+        # Initialize tables after connection is established
+        await self.initialize_tables()
+
     async def execute(self, query: str, *args) -> None:
         """
         Execute a database query with the provided arguments.
@@ -84,7 +87,42 @@ class DatabaseService:
         else:
             await self.pool.execute(query, args)
             await self.pool.commit()
-            
+    
+    async def initialize_tables(self):
+        """Create necessary tables if they don't exist"""
+
+        # Different SQL syntax for MySQL vs SQLite
+        if self.db_type == 'mysql':
+            create_commands_table = """
+            CREATE TABLE IF NOT EXISTS custom_commands (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id VARCHAR(255),
+                command_name VARCHAR(50),
+                message_index INT,
+                message_content TEXT,
+                is_default BOOLEAN DEFAULT FALSE,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                UNIQUE KEY unique_message (user_id, command_name, message_index)
+            )
+            """
+        else:
+            create_commands_table = """
+            CREATE TABLE IF NOT EXISTS custom_commands (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id TEXT,
+                command_name TEXT,
+                message_index INTEGER,
+                message_content TEXT,
+                is_default INTEGER DEFAULT 0,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                UNIQUE (user_id, command_name, message_index)
+            )
+            """
+
+        await self.execute(create_commands_table)
+    
     async def fetch_all(self, query: str, *args) -> list:
         """
         Execute a query and fetch all results.
@@ -112,7 +150,7 @@ class DatabaseService:
         else:
             async with self.pool.execute(query, args) as cursor:
                 return await cursor.fetchall()
-                
+    
     async def close(self) -> None:
         """
         Close the database connection or connection pool.

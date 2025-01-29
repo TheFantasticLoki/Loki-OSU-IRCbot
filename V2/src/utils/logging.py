@@ -74,6 +74,13 @@ class LogManager:
     def get_logger(self) -> logging.Logger:
         return self._logger
 
+import traceback
+from io import StringIO
+def getTB():
+    tb_stream = StringIO()
+    traceback.print_exc(file=tb_stream)
+    return tb_stream.getvalue()
+
 # Global convenience function
 def log(message: str, level: str = 'info') -> None:
     logger = LogManager.get_instance().get_logger()

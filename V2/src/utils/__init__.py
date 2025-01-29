@@ -1,1 +1,1 @@
-from .logging import log
+from .logging import log, getTB

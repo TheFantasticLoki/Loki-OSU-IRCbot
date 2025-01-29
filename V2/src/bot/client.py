@@ -1,8 +1,9 @@
 import osu_irc
 import asyncio
-import sys
+import traceback
+from io import StringIO
 from typing import Optional
-from ..utils import log
+from ..utils import log, getTB
 from ..services.database import DatabaseService
 from ..services.osu_api import OsuApiService
 from ..services.calculator import PPCalculator
@@ -83,7 +84,7 @@ class LokiBot(osu_irc.Client):
     
     async def onMessage(self, message):
         """Handle incoming IRC messages"""
-        log(f'INPUT: {message.Author.name}: {message.content}')
+        log(f'Chat - {message.Author.name}: {message.content}')
 
         # Check for command prefix
         if not message.content.startswith('!'):
@@ -92,18 +93,18 @@ class LokiBot(osu_irc.Client):
         # Parse command
         parts = message.content[1:].split()
         if not parts:
-            log("DEBUG: Message ignored - no command parts after split", "debug")
+            log("Message ignored - no command parts after split", "debug")
             return
 
         command_name = parts[0]
         args = parts[1:]
-        log(f"DEBUG: Parsed command: {command_name}, args: {args}", "debug")
+        log(f"Parsed command: {command_name}, args: {args}", "debug")
 
         # Look up command handler
         handler = Command.get(command_name)
         if not handler:
-            log(f"DEBUG: No handler found for command: {command_name}", "debug")
-            log(f"DEBUG: Available commands: {list(Command._commands.keys())}", "debug")
+            log(f"No handler found for command: {command_name}", "debug")
+            log(f"Available commands: {list(Command._commands.keys())}", "debug")
             return
 
         # Create context and execute
@@ -142,10 +143,10 @@ class LokiBot(osu_irc.Client):
             for msg, delay in timeout_messages:
                 await self.message_queue.add_message(message.Channel.name, msg, delay=delay)
                 
-            log(f"DEBUG: Queued {len(messages)} immediate and {len(timeout_messages)} delayed messages", "debug")
+            log(f"Queued {len(messages)} immediate and {len(timeout_messages)} delayed messages", "debug")
 
         except Exception as e:
-            log(f"Error: Error in handler execution:\nError type: {type(e).__name__}\nError message: {str(e)}\nTraceback:\n{sys.exc_info()}", "error")
+            log(f"Error in handler execution:\nError type: {type(e).__name__}\nError message: {str(e)}\nTraceback:\n{getTB()}", "error")
     
     async def send_channel_message(self, channel: str, message: str, delay: float = 0):
         """Queue message for sending with delay"""
