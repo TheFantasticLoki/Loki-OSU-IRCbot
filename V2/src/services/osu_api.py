@@ -143,3 +143,20 @@ class OsuApiService:
                 raise ValueError(f"No recent plays found for user ID {user_id}")
                 
             return scores[0] if limit == 1 else scores
+    async def get_match(self, match_id: int) -> Dict[str, Any]:
+        """Get details about a specific multiplayer match"""
+        headers = {'Authorization': f'Bearer {self.token}'}
+        async with self.session.get(
+            f'https://osu.ppy.sh/api/v2/matches/{match_id}',
+            headers=headers
+        ) as response:
+            return await response.json()
+    
+    async def get_match_events(self, match_id: int) -> Dict[str, Any]:
+        """Get events/history of a multiplayer match"""
+        headers = {'Authorization': f'Bearer {self.token}'}
+        async with self.session.get(
+            f'https://osu.ppy.sh/api/v2/matches/{match_id}/events',
+            headers=headers
+        ) as response:
+            return await response.json()

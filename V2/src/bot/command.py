@@ -15,9 +15,11 @@ class CommandContext:
     """
     author: Any
     content: str
+    channel: str
     osu_api: Any  
     database: Any
     calculator: Any
+    message_queue: Any
 
 class Command:
     """

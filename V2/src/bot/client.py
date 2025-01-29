@@ -4,8 +4,9 @@ from typing import Optional
 from ..services.database import DatabaseService
 from ..services.osu_api import OsuApiService
 from ..services.calculator import PPCalculator
+from ..services.message_queue import MessageQueue
 from ..bot.command import Command, CommandContext
-from src.commands import core_commands
+from src.commands import *
 
 class LokiBot(osu_irc.Client):
     """
@@ -26,6 +27,7 @@ class LokiBot(osu_irc.Client):
         database: DatabaseService,
         osu_api: OsuApiService,
         calculator: PPCalculator,
+        message_queue: MessageQueue,
         Loop: Optional[asyncio.AbstractEventLoop] = None
     ):
         """
@@ -42,6 +44,7 @@ class LokiBot(osu_irc.Client):
         self.database = database
         self.osu_api = osu_api
         self.calculator = calculator
+        self.message_queue = message_queue
         
     async def onReady(self):
         """Called when IRC connection is established"""
@@ -105,24 +108,39 @@ class LokiBot(osu_irc.Client):
         ctx = CommandContext(
             author=message.Author,
             content=message.content,
+            channel=message.Channel.name,
             osu_api=self.osu_api,
             database=self.database,
-            calculator=self.calculator
+            calculator=self.calculator,
+            message_queue=self.message_queue
         )
 
+        #try:
+        #    messages, timeout_messages = await handler(ctx, *args)
+        #    print(f"DEBUG: Handler returned {len(messages)} messages and {len(timeout_messages)} timeout messages")
+
+        #    # Send responses
+        #    for msg in messages:
+        #        await message.reply(self, msg)
+
+        #    if timeout_messages:
+        #        print(f"DEBUG: Waiting 5s to send {len(timeout_messages)} timeout messages")
+        #        await asyncio.sleep(5)
+        #        for msg in timeout_messages:
+        #            await message.reply(self, msg)
+        
         try:
             messages, timeout_messages = await handler(ctx, *args)
-            print(f"DEBUG: Handler returned {len(messages)} messages and {len(timeout_messages)} timeout messages")
-
-            # Send responses
+            
+            # Queue immediate messages
             for msg in messages:
-                await message.reply(self, msg)
-
-            if timeout_messages:
-                print(f"DEBUG: Waiting 5s to send {len(timeout_messages)} timeout messages")
-                await asyncio.sleep(5)
-                for msg in timeout_messages:
-                    await message.reply(self, msg)
+                await self.message_queue.add_message(message.Channel.name, msg, delay=0)
+                
+            # Queue delayed messages with their specified delays
+            for msg, delay in timeout_messages:
+                await self.message_queue.add_message(message.Channel.name, msg, delay=delay)
+                
+            print(f"DEBUG: Queued {len(messages)} immediate and {len(timeout_messages)} delayed messages")
 
         except Exception as e:
             print(f"DEBUG: Error in handler execution:")
@@ -131,3 +149,7 @@ class LokiBot(osu_irc.Client):
             print("Traceback:")
             import traceback
             traceback.print_exc()
+    
+    async def send_channel_message(self, channel: str, message: str, delay: float = 0):
+        """Queue message for sending with delay"""
+        await self.message_queue.add_message(channel, message, delay)

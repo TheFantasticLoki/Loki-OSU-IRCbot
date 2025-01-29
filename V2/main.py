@@ -7,6 +7,7 @@ from src.utils.config import load_config
 from src.services.osu_api import OsuApiService
 from src.services.database import DatabaseService
 from src.services.calculator import PPCalculator
+from src.services.message_queue import MessageQueue
 
 """
 Main module for the Loki OSU Bot application.
@@ -51,21 +52,26 @@ async def handle_console_input(bot):
     """Handle console input for lobby management"""
     while True:
         text = input()
-        
-        if not 'JOIN' in text:
-            # Handle match ID input
-            await bot.joinChannel(f"mp_{text}")
-            print(f"BOT: Joined #mp_{text}")
-            await bot.sendMessage(f"mp_{text}", "Hey there! I am Loki's IRC Bot. !lokihelp for commands. Have fun playing!")
-        else:
-            # Handle explicit JOIN command
-            channel = text.split(' ')[1]
-            if '#' in channel:
-                continue  # Skip public channels
-            
-            await bot.joinChannel(channel)
-            print(f'BOT: Joined {channel}')
-            await bot.sendMessage(channel, "Hey there! I am Loki's IRC Bot. !lokihelp for commands. Have fun playing!")
+        try:
+            if not 'JOIN' in text:
+                # Handle match ID input
+                await bot.joinChannel(f"mp_{text}")
+                print(f"BOT: Joined #mp_{text}")
+                await bot.sendMessage(f"mp_{text}", "Hey there! I am Loki's IRC Bot. !lokihelp for commands. Have fun playing!")
+            else:
+                # Handle explicit JOIN command
+                channel = text.split(' ')[1]
+                if '#' in channel:
+                    continue  # Skip public channels
+                
+                await bot.joinChannel(channel)
+                print(f'BOT: Joined {channel}')
+                await bot.sendMessage(channel, "Hey there! I am Loki's IRC Bot. !lokihelp for commands. Have fun playing!")
+        except Exception as e:
+            print(f"Error joining lobby: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            return [f"Error joining lobby: {str(e)}"], []
 
 
 async def main():
@@ -100,6 +106,8 @@ async def main():
         )
         calculator = PPCalculator()
         
+        message_queue = MessageQueue()
+        
         # Create event loop explicitly
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
@@ -111,8 +119,10 @@ async def main():
             database=database,
             osu_api=osu_api,
             calculator=calculator,
+            message_queue=message_queue,
             Loop=loop
         )
+        message_queue.init(bot)
         
         logger.info("Starting Loki OSU Bot...")
         # Start bot in separate thread
