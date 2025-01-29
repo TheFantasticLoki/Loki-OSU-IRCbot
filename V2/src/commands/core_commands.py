@@ -1,5 +1,7 @@
 from src.bot.command import Command
+from ..utils import log
 from datetime import timedelta
+import sys
 
 @Command.register("stats")
 async def stats_command(ctx, *args):
@@ -53,7 +55,7 @@ async def last_command(ctx, *args):
         
         # Get PP calculation if not ranked
         if user_recent['beatmap']['status'] != 'ranked' or user_recent['pp'] == None:
-            print(f"Calculating PP | Mods: {user_recent['mods']}")
+            log(f"Calculating PP | Mods: {user_recent['mods']}", "debug")
             pp_calc = await ctx.calculator.calculate_score(
                 beatmap_id=user_recent['beatmap']['id'],
                 mods=user_recent['mods'],
@@ -89,7 +91,5 @@ async def last_command(ctx, *args):
             f"Play Stats: Mods: {user_recent['mods']} | Combo: {user_recent['max_combo']}/{user_recent['beatmap']['count_circles'] + user_recent['beatmap']['count_sliders'] + user_recent['beatmap']['count_spinners']} | Rank: {user_recent['rank']} | Acc: {round(user_recent['accuracy'] * 100, 2)}% | Misses: {user_recent['statistics']['count_miss']} | PP: {pp_display} | Score: {user_recent['score']:,} | FC: {user_recent['perfect']}"
         ], []
     except Exception as e:
-        print(f"Error fetching recent play: {str(e)}")
-        import traceback
-        traceback.print_exc()
+        log(f"Error fetching recent play: {str(e)}\nTraceback:\n{sys.exc_info()}", "error")
         return [f"Error fetching recent play: {str(e)}"], []

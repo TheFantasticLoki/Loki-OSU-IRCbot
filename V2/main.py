@@ -3,6 +3,7 @@ import asyncio
 import logging
 from pathlib import Path
 from src.bot.client import LokiBot
+from src.utils import log
 from src.utils.config import load_config
 from src.services.osu_api import OsuApiService
 from src.services.database import DatabaseService
@@ -14,11 +15,6 @@ Main module for the Loki OSU Bot application.
 This module handles the initialization, startup, and cleanup of the bot and its dependencies.
 """
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger('loki-bot')
 
 async def cleanup_resources(bot, database):
     """
@@ -34,19 +30,19 @@ async def cleanup_resources(bot, database):
     Raises:
         Exception: Any exceptions that occur during cleanup are logged but not propagated
     """
-    logger.info("Cleaning up resources...")
+    log("Cleaning up resources...")
     try:
         await bot.cleanup()
     except Exception as e:
-        logger.error(f"Error during bot cleanup: {e}")
+        log(f"Error during bot cleanup: {e}", "error")
     
     try:
         if database and hasattr(database, 'pool'):
             await database.close()
     except Exception as e:
-        logger.error(f"Error during database cleanup: {e}")
+        log(f"Error during database cleanup: {e}", "error")
     
-    logger.info("Cleanup complete")
+    log("Cleanup complete")
     
 async def handle_console_input(bot):
     """Handle console input for lobby management"""
@@ -56,7 +52,7 @@ async def handle_console_input(bot):
             if not 'JOIN' in text:
                 # Handle match ID input
                 await bot.joinChannel(f"mp_{text}")
-                print(f"BOT: Joined #mp_{text}")
+                log(f"Joined #mp_{text}")
                 await bot.sendMessage(f"mp_{text}", "Hey there! I am Loki's IRC Bot. !lokihelp for commands. Have fun playing!")
             else:
                 # Handle explicit JOIN command
@@ -65,10 +61,10 @@ async def handle_console_input(bot):
                     continue  # Skip public channels
                 
                 await bot.joinChannel(channel)
-                print(f'BOT: Joined {channel}')
+                log(f'Joined {channel}')
                 await bot.sendMessage(channel, "Hey there! I am Loki's IRC Bot. !lokihelp for commands. Have fun playing!")
         except Exception as e:
-            print(f"Error joining lobby: {str(e)}")
+            log(f"Error joining lobby: {str(e)}", "error")
             import traceback
             traceback.print_exc()
             return [f"Error joining lobby: {str(e)}"], []
@@ -124,7 +120,7 @@ async def main():
         )
         message_queue.init(bot)
         
-        logger.info("Starting Loki OSU Bot...")
+        log("Starting Loki osu!IRC Bot...")
         # Start bot in separate thread
         _thread.start_new_thread(bot.run, ())
         
@@ -132,7 +128,7 @@ async def main():
         while not bot.running:
             await asyncio.sleep(1)
             
-        logger.info("Bot running.")
+        log("Bot running.")
         # Give connection time to establish
         await asyncio.sleep(3)
         
@@ -140,9 +136,9 @@ async def main():
         await handle_console_input(bot)
         
     except KeyboardInterrupt:
-        logger.info("Received Ctrl+C, initiating shutdown...")
+        log("Received Ctrl+C, initiating shutdown...")
     except Exception as e:
-        logger.error(f"Fatal error occurred: {e}", exc_info=True)
+        log(f"Fatal error occurred: {e}", "error", exc_info=True)
     finally:
         if bot or database:
             await cleanup_resources(bot, database)
@@ -157,4 +153,4 @@ if __name__ == "__main__":
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        logger.info("Shutdown complete")
+        log("Shutdown complete")

@@ -1,4 +1,6 @@
 from src.bot.command import Command
+from ...utils import log
+import sys
 import asyncio
 from typing import List
 
@@ -27,9 +29,7 @@ async def join_command(ctx, *args):
         return [f"Successfully joined match #{match_id}"], []
         
     except Exception as e:
-        print(f"Error joining lobby: {str(e)}")
-        import traceback
-        traceback.print_exc()
+        log(f"Error joining lobby: {str(e)}\nTraceback:\n{sys.exc_info()}", "error")
         return [f"Error joining lobby: {str(e)}"], []
 
 @Command.register("start")
