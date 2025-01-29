@@ -8,6 +8,7 @@ from src.utils.config import load_config
 from src.services.osu_api import OsuApiService
 from src.services.database import DatabaseService
 from src.services.calculator import PPCalculator
+from src.services.channel_manager import ChannelManager
 from src.services.message_queue import MessageQueue
 
 """
@@ -102,6 +103,8 @@ async def main():
         )
         calculator = PPCalculator()
         
+        channel_manager = ChannelManager(database)
+        
         message_queue = MessageQueue()
         
         # Create event loop explicitly
@@ -115,9 +118,11 @@ async def main():
             database=database,
             osu_api=osu_api,
             calculator=calculator,
+            channel_manager=channel_manager,
             message_queue=message_queue,
             Loop=loop
         )
+        channel_manager.init(bot)
         message_queue.init(bot)
         
         log("Starting Loki osu!IRC Bot...")

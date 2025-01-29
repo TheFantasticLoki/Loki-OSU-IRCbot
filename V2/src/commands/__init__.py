@@ -6,6 +6,9 @@ from .config_commands import *
 # Import Multiplayer Commands
 from .multi import *
 
+# Import Admin Commands
+from .admin import *
+
 # Maintain a comprehensive command list
 __all__ = [
     # Basic Commands

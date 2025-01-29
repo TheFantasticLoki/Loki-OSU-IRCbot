@@ -88,10 +88,54 @@ class DatabaseService:
             await self.pool.execute(query, args)
             await self.pool.commit()
     
+    async def get_schema_version(self) -> int:
+        """Get current schema version from database"""
+        try:
+            if self.db_type == 'mysql':
+                async with self.pool.acquire() as conn:
+                    async with conn.cursor() as cur:
+                        await cur.execute("SELECT MAX(version) FROM schema_versions")
+                        result = await cur.fetchone()
+            else:
+                async with self.pool.execute("SELECT MAX(version) FROM schema_versions") as cursor:
+                    result = await cursor.fetchone()
+            return result[0] if result and result[0] is not None else 0
+        except:
+            return 0
+
+    async def update_schema_version(self, version: int) -> None:
+        """Update schema version in database"""
+        await self.execute("INSERT INTO schema_versions (version) VALUES (?)", version)
+
+    
     async def initialize_tables(self):
         """Create necessary tables if they don't exist"""
 
-        # Different SQL syntax for MySQL vs SQLite
+        # Create base tables first
+        if self.db_type == 'mysql':
+            create_channels_table = """
+            CREATE TABLE IF NOT EXISTS active_channels (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                channel_name VARCHAR(255) UNIQUE,
+                is_match BOOLEAN DEFAULT FALSE,
+                auto_rejoin BOOLEAN DEFAULT TRUE,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+            """
+        else:
+            # For SQLite, create the table with all columns at once
+            create_channels_table = """
+            CREATE TABLE IF NOT EXISTS active_channels (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                channel_name TEXT UNIQUE,
+                is_match INTEGER DEFAULT 0,
+                auto_rejoin INTEGER DEFAULT 1,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+            """
+        await self.execute(create_channels_table)
+
+        # Create custom commands table
         if self.db_type == 'mysql':
             create_commands_table = """
             CREATE TABLE IF NOT EXISTS custom_commands (
@@ -120,7 +164,6 @@ class DatabaseService:
                 UNIQUE (user_id, command_name, message_index)
             )
             """
-
         await self.execute(create_commands_table)
     
     async def fetch_all(self, query: str, *args) -> list:

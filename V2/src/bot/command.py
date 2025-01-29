@@ -19,6 +19,7 @@ class CommandContext:
     osu_api: Any  
     database: Any
     calculator: Any
+    channel_manager: Any
     message_queue: Any
 
 class Command:

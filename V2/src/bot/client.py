@@ -7,6 +7,8 @@ from ..utils import log, getTB
 from ..services.database import DatabaseService
 from ..services.osu_api import OsuApiService
 from ..services.calculator import PPCalculator
+from ..services.channel_manager import ChannelManager
+from ..services.match_manager import MatchManager
 from ..services.message_queue import MessageQueue
 from ..bot.command import Command, CommandContext
 from src.commands import *
@@ -30,6 +32,7 @@ class LokiBot(osu_irc.Client):
         database: DatabaseService,
         osu_api: OsuApiService,
         calculator: PPCalculator,
+        channel_manager: ChannelManager,
         message_queue: MessageQueue,
         Loop: Optional[asyncio.AbstractEventLoop] = None
     ):
@@ -47,13 +50,22 @@ class LokiBot(osu_irc.Client):
         self.database = database
         self.osu_api = osu_api
         self.calculator = calculator
+        self.channel_manager = channel_manager
+        self.match_manager = MatchManager(self.database, self.channel_manager, self.osu_api)
         self.message_queue = message_queue
         
     async def onReady(self):
         """Called when IRC connection is established"""
         await self.calculator.initialize()
-        log("Connected and services initialized")
-        
+        # Rejoin channels after connection
+        await self.channel_manager.rejoin_channels()
+        log("BOT: Connected and rejoined channels")
+    
+    async def joinChannel(self, channel):
+        """Override to track joined channels"""
+        await super().joinChannel(channel)
+        await self.channel_manager.add_channel(channel)
+    
     async def start(self) -> None:
         """
         Start the bot's services and connection.
@@ -66,7 +78,9 @@ class LokiBot(osu_irc.Client):
         """
         await self.database.connect()
         await self.osu_api.initialize()
-        await super().start()        
+        # Start match checker in background
+        asyncio.create_task(self.match_manager.start_periodic_check())
+        await super().start()
         
     async def cleanup(self) -> None:
         """
@@ -115,22 +129,9 @@ class LokiBot(osu_irc.Client):
             osu_api=self.osu_api,
             database=self.database,
             calculator=self.calculator,
+            channel_manager=self.channel_manager,
             message_queue=self.message_queue
         )
-
-        #try:
-        #    messages, timeout_messages = await handler(ctx, *args)
-        #    print(f"DEBUG: Handler returned {len(messages)} messages and {len(timeout_messages)} timeout messages")
-
-        #    # Send responses
-        #    for msg in messages:
-        #        await message.reply(self, msg)
-
-        #    if timeout_messages:
-        #        print(f"DEBUG: Waiting 5s to send {len(timeout_messages)} timeout messages")
-        #        await asyncio.sleep(5)
-        #        for msg in timeout_messages:
-        #            await message.reply(self, msg)
         
         try:
             messages, timeout_messages = await handler(ctx, *args)
