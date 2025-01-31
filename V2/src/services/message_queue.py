@@ -1,6 +1,7 @@
 from typing import Dict, List, Optional, Tuple
 import asyncio
 import time
+from ..utils import log
 
 class MessageQueue:
     def __init__(self):
@@ -20,23 +21,28 @@ class MessageQueue:
             self.tasks[channel] = asyncio.create_task(self.process_queue(channel))
         return self.queues[channel]
         
-    async def add_message(self, channel: str, message: str, delay: float = 0) -> int:
+    async def add_message(self, channel: str, message: str, triggermsg, delay: float = 0) -> int:
         """Add message to queue and return number of queued messages"""
         queue = self.get_queue(channel)
-        await queue.put((message, time.time() + delay))
+        await queue.put((message, triggermsg, time.time() + delay))
         self.message_counts[channel] = self.message_counts.get(channel, 0) + 1
         return self.message_counts[channel]
 
     async def process_queue(self, channel: str):
         """Process messages for a channel"""
+        log(f"channel: {channel}")
         queue = self.queues[channel]
         while True:
-            message, send_time = await queue.get()
+            message, triggermsg, send_time = await queue.get()
             current_time = time.time()
             if send_time > current_time:
                 await asyncio.sleep(send_time - current_time)
-            
-            # Actually send the message through IRC
-            await self.bot.sendMessage(channel, message)
+
+            # Use triggermsg.reply for non-multiplayer channels, otherwise use bot.sendMessage
+            if 'mp_' not in channel:
+                await triggermsg.reply(self.bot, message)
+            else:
+                await self.bot.sendMessage(channel, message)
+
             self.message_counts[channel] -= 1
             queue.task_done()

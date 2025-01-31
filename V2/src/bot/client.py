@@ -139,11 +139,11 @@ class LokiBot(osu_irc.Client):
             
             # Queue immediate messages
             for msg in messages:
-                await self.message_queue.add_message(message.Channel.name, msg, delay=0)
+                await self.message_queue.add_message(message.Channel.name, msg, message, delay=0)
                 
             # Queue delayed messages with their specified delays
             for msg, delay in timeout_messages:
-                await self.message_queue.add_message(message.Channel.name, msg, delay=delay)
+                await self.message_queue.add_message(message.Channel.name, msg, message, delay=delay)
                 
             log(f"Queued {len(messages)} immediate and {len(timeout_messages)} delayed messages", "debug")
 
