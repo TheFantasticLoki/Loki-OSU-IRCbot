@@ -27,6 +27,10 @@ async def help_command(ctx: CommandContext, *args) -> Tuple[List[str], List[Tupl
     if category not in categories:
         return ["Invalid category. Use !bothelp to see available categories."], []
     
+    # Initialize default category if it doesn't exist
+    if "default" not in categories[category]:
+        categories[category]["default"] = []
+    
     if len(args) == 1:
         # First show subcategories if they exist
         subcats = [sub for sub in categories[category].keys() if sub != "default"]
@@ -84,5 +88,3 @@ async def help_command(ctx: CommandContext, *args) -> Tuple[List[str], List[Tupl
     
     log(f"Final Messages: {messages}", "debug")
     return messages, []
-
-
